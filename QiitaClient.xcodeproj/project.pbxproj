@@ -13,6 +13,8 @@
 		BE95925A274F816C00A2B211 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE959258274F816C00A2B211 /* Main.storyboard */; };
 		BE95925C274F817800A2B211 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE95925B274F817800A2B211 /* Assets.xcassets */; };
 		BE95925F274F817800A2B211 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE95925D274F817800A2B211 /* LaunchScreen.storyboard */; };
+		BE959267274F8C6200A2B211 /* QiitaTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE959266274F8C6200A2B211 /* QiitaTableViewCell.xib */; };
+		BE959269274F8E5500A2B211 /* QiitaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE959268274F8E5500A2B211 /* QiitaTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		BE95925B274F817800A2B211 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BE95925E274F817800A2B211 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BE959260274F817800A2B211 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BE959266274F8C6200A2B211 /* QiitaTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QiitaTableViewCell.xib; sourceTree = "<group>"; };
+		BE959268274F8E5500A2B211 /* QiitaTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiitaTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,8 @@
 				BE959254274F816C00A2B211 /* SceneDelegate.swift */,
 				BE959256274F816C00A2B211 /* ViewController.swift */,
 				BE959258274F816C00A2B211 /* Main.storyboard */,
+				BE959266274F8C6200A2B211 /* QiitaTableViewCell.xib */,
+				BE959268274F8E5500A2B211 /* QiitaTableViewCell.swift */,
 				BE95925B274F817800A2B211 /* Assets.xcassets */,
 				BE95925D274F817800A2B211 /* LaunchScreen.storyboard */,
 				BE959260274F817800A2B211 /* Info.plist */,
@@ -127,6 +133,7 @@
 			files = (
 				BE95925F274F817800A2B211 /* LaunchScreen.storyboard in Resources */,
 				BE95925C274F817800A2B211 /* Assets.xcassets in Resources */,
+				BE959267274F8C6200A2B211 /* QiitaTableViewCell.xib in Resources */,
 				BE95925A274F816C00A2B211 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,6 +147,7 @@
 			files = (
 				BE959257274F816C00A2B211 /* ViewController.swift in Sources */,
 				BE959253274F816C00A2B211 /* AppDelegate.swift in Sources */,
+				BE959269274F8E5500A2B211 /* QiitaTableViewCell.swift in Sources */,
 				BE959255274F816C00A2B211 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
