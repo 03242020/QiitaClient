@@ -15,7 +15,8 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         // ➀:tableViewのdataSourceをViewController自身に設定
         tableView.dataSource = self
-
+        tableView.delegate = self // この行を追加
+        
         // ➁:cellをtableViewに設定
         // nibNameはファイル名を指定する
         let nib = UINib(nibName: "QiitaTableViewCell", bundle: nil)
@@ -40,8 +41,25 @@ extension ViewController: UITableViewDataSource {
         // ➃:cellに情報を設定する
         cell.set(title: "タイトル\(indexPath.row)", author: "作成者")
         return cell
+        
+        
     }
 
 
+    
 }
 
+//素コピペ
+
+extension ViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // UIStoryboardを生成
+        // nameにはファイル名を指定する
+        let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
+        // storyboardからInitialViewControllerを取得
+        // InitialViewControllerにWebViewControllerを指定しているのでキャストする
+        let webViewController = storyboard.instantiateInitialViewController() as! WebViewController
+        // navigationControllerでpush遷移させる
+        navigationController?.pushViewController(webViewController, animated: true)
+    }
+}
