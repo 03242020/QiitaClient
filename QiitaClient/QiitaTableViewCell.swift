@@ -9,11 +9,12 @@ import UIKit
 
 class QiitaTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
-    func set(title: String, author: String) {
-        iconImageView.backgroundColor = .red
+    @IBOutlet weak var postedLabel: UILabel!
+    
+    func set(title: String, author: String, posted: String) {
+        postedLabel.text = posted
         titleLabel.text = title
         authorLabel.text = author
     }

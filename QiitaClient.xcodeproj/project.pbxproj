@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE8789A427585EAB007902F5 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8789A327585EAB007902F5 /* APIService.swift */; };
 		BE959253274F816C00A2B211 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE959252274F816C00A2B211 /* AppDelegate.swift */; };
 		BE959255274F816C00A2B211 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE959254274F816C00A2B211 /* SceneDelegate.swift */; };
 		BE959257274F816C00A2B211 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE959256274F816C00A2B211 /* ViewController.swift */; };
@@ -21,9 +22,11 @@
 		BE9592732754D7E000A2B211 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = BE9592722754D7E000A2B211 /* Nuke */; };
 		BE9592762754D81A00A2B211 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = BE9592752754D81A00A2B211 /* Alamofire */; };
 		BE9592782754D87400A2B211 /* QiitaUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9592772754D87400A2B211 /* QiitaUser.swift */; };
+		BE95927C2755C1A300A2B211 /* QiitaArticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE95927B2755C1A300A2B211 /* QiitaArticle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BE8789A327585EAB007902F5 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		BE95924F274F816C00A2B211 /* QiitaClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QiitaClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE959252274F816C00A2B211 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BE959254274F816C00A2B211 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -38,6 +41,7 @@
 		BE95926C27546CEA00A2B211 /* WebViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = WebViewController.storyboard; sourceTree = "<group>"; };
 		BE95926F27546E1000A2B211 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		BE9592772754D87400A2B211 /* QiitaUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiitaUser.swift; sourceTree = "<group>"; };
+		BE95927B2755C1A300A2B211 /* QiitaArticle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiitaArticle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,8 +80,10 @@
 			children = (
 				BE959252274F816C00A2B211 /* AppDelegate.swift */,
 				BE9592772754D87400A2B211 /* QiitaUser.swift */,
+				BE95927B2755C1A300A2B211 /* QiitaArticle.swift */,
 				BE959254274F816C00A2B211 /* SceneDelegate.swift */,
 				BE959256274F816C00A2B211 /* ViewController.swift */,
+				BE8789A327585EAB007902F5 /* APIService.swift */,
 				BE95926A27546C2800A2B211 /* WebViewController.swift */,
 				BE95926C27546CEA00A2B211 /* WebViewController.storyboard */,
 				BE959258274F816C00A2B211 /* Main.storyboard */,
@@ -180,10 +186,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE959257274F816C00A2B211 /* ViewController.swift in Sources */,
+				BE95927C2755C1A300A2B211 /* QiitaArticle.swift in Sources */,
 				BE959253274F816C00A2B211 /* AppDelegate.swift in Sources */,
 				BE959269274F8E5500A2B211 /* QiitaTableViewCell.swift in Sources */,
 				BE95926B27546C2800A2B211 /* WebViewController.swift in Sources */,
 				BE959255274F816C00A2B211 /* SceneDelegate.swift in Sources */,
+				BE8789A427585EAB007902F5 /* APIService.swift in Sources */,
 				BE9592782754D87400A2B211 /* QiitaUser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -340,7 +348,7 @@
 				INFOPLIST_FILE = QiitaClient/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = WebViewController;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -368,7 +376,7 @@
 				INFOPLIST_FILE = QiitaClient/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = WebViewController;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
