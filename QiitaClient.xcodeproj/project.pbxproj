@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		BE8789A427585EAB007902F5 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8789A327585EAB007902F5 /* APIService.swift */; };
+		BE8789A6276050E0007902F5 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8789A5276050E0007902F5 /* test.swift */; };
+		BE8789A8276050ED007902F5 /* test.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE8789A7276050ED007902F5 /* test.storyboard */; };
+		BE8789CB2761A33F007902F5 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = BE8789CA2761A33F007902F5 /* Alamofire */; };
 		BE959253274F816C00A2B211 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE959252274F816C00A2B211 /* AppDelegate.swift */; };
 		BE959255274F816C00A2B211 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE959254274F816C00A2B211 /* SceneDelegate.swift */; };
 		BE959257274F816C00A2B211 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE959256274F816C00A2B211 /* ViewController.swift */; };
@@ -19,14 +22,14 @@
 		BE95926B27546C2800A2B211 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE95926A27546C2800A2B211 /* WebViewController.swift */; };
 		BE95926D27546CEA00A2B211 /* WebViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE95926C27546CEA00A2B211 /* WebViewController.storyboard */; };
 		BE95927027546E1000A2B211 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE95926F27546E1000A2B211 /* WebKit.framework */; };
-		BE9592732754D7E000A2B211 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = BE9592722754D7E000A2B211 /* Nuke */; };
-		BE9592762754D81A00A2B211 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = BE9592752754D81A00A2B211 /* Alamofire */; };
 		BE9592782754D87400A2B211 /* QiitaUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9592772754D87400A2B211 /* QiitaUser.swift */; };
 		BE95927C2755C1A300A2B211 /* QiitaArticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE95927B2755C1A300A2B211 /* QiitaArticle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		BE8789A327585EAB007902F5 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		BE8789A5276050E0007902F5 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
+		BE8789A7276050ED007902F5 /* test.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = test.storyboard; sourceTree = "<group>"; };
 		BE95924F274F816C00A2B211 /* QiitaClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QiitaClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE959252274F816C00A2B211 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BE959254274F816C00A2B211 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,9 +52,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE9592762754D81A00A2B211 /* Alamofire in Frameworks */,
 				BE95927027546E1000A2B211 /* WebKit.framework in Frameworks */,
-				BE9592732754D7E000A2B211 /* Nuke in Frameworks */,
+				BE8789CB2761A33F007902F5 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,6 +81,8 @@
 			isa = PBXGroup;
 			children = (
 				BE959252274F816C00A2B211 /* AppDelegate.swift */,
+				BE8789A5276050E0007902F5 /* test.swift */,
+				BE8789A7276050ED007902F5 /* test.storyboard */,
 				BE9592772754D87400A2B211 /* QiitaUser.swift */,
 				BE95927B2755C1A300A2B211 /* QiitaArticle.swift */,
 				BE959254274F816C00A2B211 /* SceneDelegate.swift */,
@@ -121,8 +125,7 @@
 			);
 			name = QiitaClient;
 			packageProductDependencies = (
-				BE9592722754D7E000A2B211 /* Nuke */,
-				BE9592752754D81A00A2B211 /* Alamofire */,
+				BE8789CA2761A33F007902F5 /* Alamofire */,
 			);
 			productName = QiitaClient;
 			productReference = BE95924F274F816C00A2B211 /* QiitaClient.app */;
@@ -153,8 +156,7 @@
 			);
 			mainGroup = BE959246274F816C00A2B211;
 			packageReferences = (
-				BE9592712754D7E000A2B211 /* XCRemoteSwiftPackageReference "Nuke" */,
-				BE9592742754D81A00A2B211 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				BE8789C92761A33F007902F5 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = BE959250274F816C00A2B211 /* Products */;
 			projectDirPath = "";
@@ -174,6 +176,7 @@
 				BE95925C274F817800A2B211 /* Assets.xcassets in Resources */,
 				BE959267274F8C6200A2B211 /* QiitaTableViewCell.xib in Resources */,
 				BE95925A274F816C00A2B211 /* Main.storyboard in Resources */,
+				BE8789A8276050ED007902F5 /* test.storyboard in Resources */,
 				BE95926D27546CEA00A2B211 /* WebViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -189,6 +192,7 @@
 				BE95927C2755C1A300A2B211 /* QiitaArticle.swift in Sources */,
 				BE959253274F816C00A2B211 /* AppDelegate.swift in Sources */,
 				BE959269274F8E5500A2B211 /* QiitaTableViewCell.swift in Sources */,
+				BE8789A6276050E0007902F5 /* test.swift in Sources */,
 				BE95926B27546C2800A2B211 /* WebViewController.swift in Sources */,
 				BE959255274F816C00A2B211 /* SceneDelegate.swift in Sources */,
 				BE8789A427585EAB007902F5 /* APIService.swift in Sources */,
@@ -416,15 +420,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		BE9592712754D7E000A2B211 /* XCRemoteSwiftPackageReference "Nuke" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kean/Nuke";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-		BE9592742754D81A00A2B211 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		BE8789C92761A33F007902F5 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
 			requirement = {
@@ -435,14 +431,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		BE9592722754D7E000A2B211 /* Nuke */ = {
+		BE8789CA2761A33F007902F5 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BE9592712754D7E000A2B211 /* XCRemoteSwiftPackageReference "Nuke" */;
-			productName = Nuke;
-		};
-		BE9592752754D81A00A2B211 /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BE9592742754D81A00A2B211 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			package = BE8789C92761A33F007902F5 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
