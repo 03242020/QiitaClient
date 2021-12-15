@@ -33,15 +33,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     let iso8601DateFormatter = ISO8601DateFormatter()
         //表示するデータの配列
     var datas:[Data] = []
-      //ページネーション関連変数
-    var pageCount:Int = 1
       //表示ステータス
     var displayStatus:String = "standby"
-      //ページの総数
-    var total_pages:Int = 1
-    
+    //現在取得しているセル数
+    private var page: Int = 1
+    //必要以上のapi叩かない様にする
+    private var loadStatus: String = "initial"
     private var articles: [QiitaArticle] = [] // ②取得した記事一覧を保持しておくプロパティ
-
+    
+    private var viewArticles: [QiitaArticle] = []
     var num:Int = 0
     var test = 0
     var isLoading = false;
@@ -60,21 +60,55 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let nib = UINib(nibName: "QiitaTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "QiitaTableViewCell")
         tableView.rowHeight = 80
-        getQiitaArticles(some: num)
-        button.addAction(.init { _ in self.num += 20 }, for: .touchUpInside)
-        button.addAction(.init { _ in self.getQiitaArticles(some: self.num) }, for: .touchUpInside)
+        getQiitaArticles()
+//        button.addAction(.init { _ in self.num += 20 }, for: .touchUpInside)
+        button.addAction(.init { _ in self.getQiitaArticles() }, for: .touchUpInside)
 
     }
-
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let currentOffsetY = scrollView.contentOffset.y
+        let maximumOffset = scrollView.contentSize.height - scrollView.frame.height
+        let distanceToBottom = maximumOffset - currentOffsetY
+        print("currentOffsetY: \(currentOffsetY)")
+        print("maximumOffset: \(maximumOffset)")
+        print("distanceToBottom: \(distanceToBottom)")
+        if distanceToBottom < 500 {
+            getQiitaArticles()
+        }
+    }
+//    + String(20 + num)
     // loadする関数の定義
-    private func getQiitaArticles(some: Int) {
-        AF.request("https://qiita.com/api/v2/tags/iOS/items?page=1&per_page=" + String(20 + some),headers: Auth_header).responseJSON { response in
+    private func getQiitaArticles() {
+        guard loadStatus != "fetching" && loadStatus != "full" else { return }
+        loadStatus = "fetching"
+        AF.request("https://qiita.com/api/v2/tags/iOS/items?page=\(page)&per_page=10",headers: Auth_header).responseJSON { [self] response in
             switch response.result {
             case .success:
                 do {
-                    self.articles = try self.decoder.decode([QiitaArticle].self, from: response.data!)
+                    print("page: " + String(page))
+//                    print(articles.count)
+                    self.loadStatus = "loadmore"
+                    //今のままだと全部上書きされているのでaddにしないといけない。 articlesを消えないように保持する。初期化するときはリフレッシュの時だけにする。
+
+                    viewArticles = try self.decoder.decode([QiitaArticle].self, from: response.data!)
+//                    DispatchQueue.main.async() { () -> Void in
+////                        self.articles += articles //現状のarticlesに追加してくように書き換え
+//                        self.articles.append(contentsOf: articles)
+//                        print(self.articles)
+//                    }
+
+                    if self.page == 100 {
+                        self.loadStatus = "full"
+                    }
+                    print(articles)
+                    print("==============================")
+                    articles += viewArticles
+                    print(articles)
+                    self.page += 1 //pageを+1する処理
+                    print("count: " + String(self.articles.count))
                     self.tableView.reloadData()
                 } catch {
+                    self.loadStatus = "error"
                     print("デコードに失敗しました")
                 }
             case .failure(let error):
@@ -127,11 +161,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
 
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-
-        if tableView.contentOffset.y + tableView.frame.size.height > tableView.contentSize.height && tableView.isDragging {
-            getQiitaArticles(some: self.num)
-        }
-    }
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//
+//        if tableView.contentOffset.y + tableView.frame.size.height > tableView.contentSize.height && tableView.isDragging {
+//            getQiitaArticles(some: self.num)
+//        }
+//    }
 
 }
