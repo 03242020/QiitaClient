@@ -9,13 +9,14 @@ import UIKit
 import Alamofire
 import AVFoundation
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var button: UIButton!
-
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     
     let username = "ryo_inomata"
     let password = "1q1q1q1q"
@@ -37,6 +38,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var displayStatus:String = "standby"
     //現在取得しているセル数
     private var page: Int = 1
+    private var tag: String = "iOS"
     //必要以上のapi叩かない様にする
     private var loadStatus: String = "initial"
     private var articles: [QiitaArticle] = [] // ②取得した記事一覧を保持しておくプロパティ
@@ -51,7 +53,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         
 
-      
+        searchBar.delegate = self //　追記
         tableView.dataSource = self
         tableView.delegate = self // この行を追加
         formatstr.dateFormat = "yyyy-MM-dd"
@@ -81,7 +83,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     private func getQiitaArticles() {
         guard loadStatus != "fetching" && loadStatus != "full" else { return }
         loadStatus = "fetching"
-        AF.request("https://qiita.com/api/v2/tags/iOS/items?page=\(page)&per_page=10",headers: Auth_header).responseJSON { [self] response in
+        AF.request("https://qiita.com/api/v2/tags/\(tag)/items?page=\(page)&per_page=10",headers: Auth_header).responseJSON { [self] response in
             switch response.result {
             case .success:
                 do {
@@ -159,7 +161,41 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             webViewController.url = article.url
             navigationController?.pushViewController(webViewController, animated: true)
     }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        var filterdArr: [String] = []
+        if let text = searchBar.text {
+            if text == "" {
+                self.page -= 1
+                getQiitaArticles()
+            } else {
+                tag = text
+                articles = []
+                getQiitaArticles()
+//                filterdArr = articles.filter { (str) -> Bool in
+//                filterdArr = art.filter { (str) -> Bool in
+//                    return str.contains(text)
+                }
+            self.tableView.reloadData()
+            }
+        }
+    }
+    
 
+//    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+//    }
+//    //  検索バーに入力があったら呼ばれる
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        guard !searchText.isEmpty else {
+//            self.tag = searchText
+////            currentItems = items
+////            table.reloadData()
+//            return
+//        }
+////        currentItems = items.filter({ item -> Bool in
+////            item.title.lowercased().contains(searchText.lowercased())
+////        })
+//        self.tableView.reloadData()
+//    }
     
 //    func scrollViewDidScroll(_ scrollView: UIScrollView) {
 //
@@ -168,4 +204,4 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 //        }
 //    }
 
-}
+

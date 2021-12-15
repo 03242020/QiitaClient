@@ -20,6 +20,11 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="734"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" id="MuM-FP-GRF">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </searchBar>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="aEB-Xu-ixs">
                                 <rect key="frame" x="318" y="818" width="76" height="83"/>
@@ -34,6 +39,7 @@
                     <navigationItem key="navigationItem" id="GBt-8P-7zy"/>
                     <connections>
                         <outlet property="button" destination="aEB-Xu-ixs" id="A9x-Pd-0cu"/>
+                        <outlet property="searchBar" destination="MuM-FP-GRF" id="aL6-SO-gj4"/>
                         <outlet property="tableView" destination="q1h-5Y-dau" id="FLE-ud-KIG"/>
                     </connections>
                 </viewController>
