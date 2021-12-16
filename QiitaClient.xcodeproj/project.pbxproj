@@ -24,6 +24,10 @@
 		BE95927027546E1000A2B211 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE95926F27546E1000A2B211 /* WebKit.framework */; };
 		BE9592782754D87400A2B211 /* QiitaUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9592772754D87400A2B211 /* QiitaUser.swift */; };
 		BE95927C2755C1A300A2B211 /* QiitaArticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE95927B2755C1A300A2B211 /* QiitaArticle.swift */; };
+		BEDC2DAF276ACCA100EEC5EA /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = BEDC2DAE276ACCA100EEC5EA /* RxCocoa */; };
+		BEDC2DB1276ACCA100EEC5EA /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BEDC2DB0276ACCA100EEC5EA /* RxSwift */; };
+		BEDC2DB4276AD01900EEC5EA /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = BEDC2DB3276AD01900EEC5EA /* ReactorKit */; };
+		BEDC2DB6276AD09700EEC5EA /* ViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDC2DB5276AD09700EEC5EA /* ViewReactor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +49,7 @@
 		BE95926F27546E1000A2B211 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		BE9592772754D87400A2B211 /* QiitaUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiitaUser.swift; sourceTree = "<group>"; };
 		BE95927B2755C1A300A2B211 /* QiitaArticle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiitaArticle.swift; sourceTree = "<group>"; };
+		BEDC2DB5276AD09700EEC5EA /* ViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewReactor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +57,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEDC2DAF276ACCA100EEC5EA /* RxCocoa in Frameworks */,
 				BE95927027546E1000A2B211 /* WebKit.framework in Frameworks */,
+				BEDC2DB1276ACCA100EEC5EA /* RxSwift in Frameworks */,
+				BEDC2DB4276AD01900EEC5EA /* ReactorKit in Frameworks */,
 				BE8789CB2761A33F007902F5 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -87,6 +95,7 @@
 				BE95927B2755C1A300A2B211 /* QiitaArticle.swift */,
 				BE959254274F816C00A2B211 /* SceneDelegate.swift */,
 				BE959256274F816C00A2B211 /* ViewController.swift */,
+				BEDC2DB5276AD09700EEC5EA /* ViewReactor.swift */,
 				BE8789A327585EAB007902F5 /* APIService.swift */,
 				BE95926A27546C2800A2B211 /* WebViewController.swift */,
 				BE95926C27546CEA00A2B211 /* WebViewController.storyboard */,
@@ -126,6 +135,9 @@
 			name = QiitaClient;
 			packageProductDependencies = (
 				BE8789CA2761A33F007902F5 /* Alamofire */,
+				BEDC2DAE276ACCA100EEC5EA /* RxCocoa */,
+				BEDC2DB0276ACCA100EEC5EA /* RxSwift */,
+				BEDC2DB3276AD01900EEC5EA /* ReactorKit */,
 			);
 			productName = QiitaClient;
 			productReference = BE95924F274F816C00A2B211 /* QiitaClient.app */;
@@ -157,6 +169,8 @@
 			mainGroup = BE959246274F816C00A2B211;
 			packageReferences = (
 				BE8789C92761A33F007902F5 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				BEDC2DAD276ACCA100EEC5EA /* XCRemoteSwiftPackageReference "RxSwift" */,
+				BEDC2DB2276AD01900EEC5EA /* XCRemoteSwiftPackageReference "ReactorKit" */,
 			);
 			productRefGroup = BE959250274F816C00A2B211 /* Products */;
 			projectDirPath = "";
@@ -197,6 +211,7 @@
 				BE959255274F816C00A2B211 /* SceneDelegate.swift in Sources */,
 				BE8789A427585EAB007902F5 /* APIService.swift in Sources */,
 				BE9592782754D87400A2B211 /* QiitaUser.swift in Sources */,
+				BEDC2DB6276AD09700EEC5EA /* ViewReactor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,6 +443,22 @@
 				kind = branch;
 			};
 		};
+		BEDC2DAD276ACCA100EEC5EA /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		BEDC2DB2276AD01900EEC5EA /* XCRemoteSwiftPackageReference "ReactorKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactorKit/ReactorKit";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -435,6 +466,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BE8789C92761A33F007902F5 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		BEDC2DAE276ACCA100EEC5EA /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEDC2DAD276ACCA100EEC5EA /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		BEDC2DB0276ACCA100EEC5EA /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEDC2DAD276ACCA100EEC5EA /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		BEDC2DB3276AD01900EEC5EA /* ReactorKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEDC2DB2276AD01900EEC5EA /* XCRemoteSwiftPackageReference "ReactorKit" */;
+			productName = ReactorKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

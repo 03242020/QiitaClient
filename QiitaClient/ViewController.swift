@@ -8,6 +8,8 @@
 import UIKit
 import Alamofire
 import AVFoundation
+import RxSwift
+import RxCocoa
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
@@ -17,6 +19,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var button: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
     
+    @IBOutlet weak var emptyLabel: UILabel!
+    
+    var disposeBag = DisposeBag()
     
     let username = "ryo_inomata"
     let password = "1q1q1q1q"
@@ -42,16 +47,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     //必要以上のapi叩かない様にする
     private var loadStatus: String = "initial"
     private var articles: [QiitaArticle] = [] // ②取得した記事一覧を保持しておくプロパティ
-    
+    var bool = true
     private var viewArticles: [QiitaArticle] = []
     var num:Int = 0
     var test = 0
-    var isLoading = false;
-
+    var isLoading = false
+ 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
 
         searchBar.delegate = self //　追記
         tableView.dataSource = self
@@ -63,7 +67,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableView.register(nib, forCellReuseIdentifier: "QiitaTableViewCell")
         tableView.rowHeight = 80
         getQiitaArticles()
-//        button.addAction(.init { _ in self.num += 20 }, for: .touchUpInside)
+        emptyLabel.isHidden = bool
+        if self.articles.count == 0 {
+            emptyLabel.isHidden = true
+        }else{
+            emptyLabel.isHidden = false
+        }
         button.addAction(.init { _ in self.getQiitaArticles() }, for: .touchUpInside)
 
     }
@@ -71,14 +80,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let currentOffsetY = scrollView.contentOffset.y
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.height
         let distanceToBottom = maximumOffset - currentOffsetY
-        print("currentOffsetY: \(currentOffsetY)")
-        print("maximumOffset: \(maximumOffset)")
-        print("distanceToBottom: \(distanceToBottom)")
+//        print("currentOffsetY: \(currentOffsetY)")
+//        print("maximumOffset: \(maximumOffset)")
+//        print("distanceToBottom: \(distanceToBottom)")
         if distanceToBottom < 500 {
             getQiitaArticles()
         }
     }
-//    + String(20 + num)
+
     // loadする関数の定義
     private func getQiitaArticles() {
         guard loadStatus != "fetching" && loadStatus != "full" else { return }
@@ -88,30 +97,25 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             case .success:
                 do {
                     print("page: " + String(page))
-//                    print(articles.count)
                     self.loadStatus = "loadmore"
                     //今のままだと全部上書きされているのでaddにしないといけない。 articlesを消えないように保持する。初期化するときはリフレッシュの時だけにする。
 
                     viewArticles = try self.decoder.decode([QiitaArticle].self, from: response.data!)
-//                    DispatchQueue.main.async() { () -> Void in
-////                        self.articles += articles //現状のarticlesに追加してくように書き換え
-//                        self.articles.append(contentsOf: articles)
-//                        print(self.articles)
-//                    }
+
 
                     if self.page == 100 {
                         self.loadStatus = "full"
                     }
-                    print(articles)
-                    print("==============================")
-                    articles += viewArticles
-                    print(articles)
+                    self.articles += viewArticles
+                    print("Search呼び出し" ,self.articles.count)
+                    emptyLabel.isHidden = true
                     self.page += 1 //pageを+1する処理
                     print("count: " + String(self.articles.count))
                     self.tableView.reloadData()
                 } catch {
                     self.loadStatus = "error"
                     print("デコードに失敗しました")
+                    emptyLabel.isHidden = false
                 }
             case .failure(let error):
                 print("error", error)
@@ -130,7 +134,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         // ⑧indexPathを用いてarticlesから該当のarticleを取得する
         let article = articles[indexPath.row]
-        print(type(of: article.created_at))
+//        print(type(of: article.created_at))
 
 
         // ロケール設定（端末の暦設定に引きづられないようにする）
@@ -145,7 +149,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
 
         let dateStr = formatstr.string(from: date!)
-        print(dateStr) // -> 2020-10-20 02:22:33 +0000
+//        print(dateStr) // -> 2020-10-20 02:22:33 +0000
         let authorColon = "著者: " + article.user.id
         let postedColon = "投稿日: " + dateStr
         let titleColon = "タイトル: " + article.title
@@ -162,46 +166,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             navigationController?.pushViewController(webViewController, animated: true)
     }
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        var filterdArr: [String] = []
         if let text = searchBar.text {
+            print("===================サーチ処理=========================")
             if text == "" {
                 self.page -= 1
                 getQiitaArticles()
-            } else {
+            }else{
+                self.page = 1
                 tag = text
                 articles = []
                 getQiitaArticles()
-//                filterdArr = articles.filter { (str) -> Bool in
-//                filterdArr = art.filter { (str) -> Bool in
-//                    return str.contains(text)
-                }
-            self.tableView.reloadData()
             }
         }
+        self.tableView.reloadData()
+        }
     }
-    
-
-//    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-//    }
-//    //  検索バーに入力があったら呼ばれる
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        guard !searchText.isEmpty else {
-//            self.tag = searchText
-////            currentItems = items
-////            table.reloadData()
-//            return
-//        }
-////        currentItems = items.filter({ item -> Bool in
-////            item.title.lowercased().contains(searchText.lowercased())
-////        })
-//        self.tableView.reloadData()
-//    }
-    
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//
-//        if tableView.contentOffset.y + tableView.frame.size.height > tableView.contentSize.height && tableView.isDragging {
-//            getQiitaArticles(some: self.num)
-//        }
-//    }
-
-
