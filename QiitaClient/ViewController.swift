@@ -21,6 +21,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     @IBOutlet weak var emptyLabel: UILabel!
     
+    
     var disposeBag = DisposeBag()
     
     let username = "ryo_inomata"
@@ -43,6 +44,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var displayStatus:String = "standby"
     //現在取得しているセル数
     private var page: Int = 1
+    private var escapePage: Int = 0
+    private var per_page: Int = 10
     private var tag: String = "iOS"
     //必要以上のapi叩かない様にする
     private var loadStatus: String = "initial"
@@ -52,7 +55,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var num:Int = 0
     var test = 0
     var isLoading = false
- 
+    enum LoadStatus {
+        case initial
+        case fetching
+        case full
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,6 +73,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let nib = UINib(nibName: "QiitaTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "QiitaTableViewCell")
         tableView.rowHeight = 80
+        configureRefreshControl()  //この関数を実行することで更新処理がスタート
         getQiitaArticles()
         emptyLabel.isHidden = bool
         if self.articles.count == 0 {
@@ -80,11 +88,20 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let currentOffsetY = scrollView.contentOffset.y
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.height
         let distanceToBottom = maximumOffset - currentOffsetY
+        print("===========スクロール処理===========")
+        print("maximumOffset: ",maximumOffset)
+        print("currentOffset.y: ",scrollView.contentOffset.y)
+        print("contentSize.height: ",scrollView.contentSize.height)
+        print("frame.height: ",scrollView.frame.height)
+        print("distanceToBottom: ",distanceToBottom)
+        print("articles.count: ",articles.count)
 //        print("currentOffsetY: \(currentOffsetY)")
 //        print("maximumOffset: \(maximumOffset)")
 //        print("distanceToBottom: \(distanceToBottom)")
-        if distanceToBottom < 500 {
+        if distanceToBottom < 50 {
+
             getQiitaArticles()
+//            print("articles.count: ",articles.count)
         }
     }
 
@@ -92,23 +109,29 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     private func getQiitaArticles() {
         guard loadStatus != "fetching" && loadStatus != "full" else { return }
         loadStatus = "fetching"
-        AF.request("https://qiita.com/api/v2/tags/\(tag)/items?page=\(page)&per_page=10",headers: Auth_header).responseJSON { [self] response in
+        print("getQiitaArticles内、サーチ処理中のpage ",self.page,"+ per_page " , self.per_page)
+        
+        AF.request("https://qiita.com/api/v2/tags/\(tag)/items?page=\(page)&per_page=\(per_page)",headers: Auth_header).responseJSON { [self] response in
             switch response.result {
             case .success:
                 do {
-                    print("page: " + String(page))
+                    print("page: " + String(self.page))
                     self.loadStatus = "loadmore"
                     //今のままだと全部上書きされているのでaddにしないといけない。 articlesを消えないように保持する。初期化するときはリフレッシュの時だけにする。
 
                     viewArticles = try self.decoder.decode([QiitaArticle].self, from: response.data!)
 
-
                     if self.page == 100 {
                         self.loadStatus = "full"
                     }
                     self.articles += viewArticles
-                    print("Search呼び出し" ,self.articles.count)
-                    emptyLabel.isHidden = true
+                    print("getQiitaArticles内且つdo内、サーチ処理中のpage ",self.page,"+ per_page " , self.per_page)
+                    if articles.count == 0 {
+                        emptyLabel.isHidden = false
+                    }else{
+                        emptyLabel.isHidden = true
+                    }
+                    
                     self.page += 1 //pageを+1する処理
                     print("count: " + String(self.articles.count))
                     self.tableView.reloadData()
@@ -170,14 +193,44 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             print("===================サーチ処理=========================")
             if text == "" {
                 self.page -= 1
+                articles = []
+                self.escapePage = self.page
+                self.per_page = self.page * 10
+                self.page = 1
+                print("サーチ処理中のpage ",self.page,"+ per_page " , self.per_page)
                 getQiitaArticles()
+                print("サーチ処理中のarticles.count" ,self.articles.count)
+                self.page = self.escapePage
+                self.per_page = 10
+                
             }else{
                 self.page = 1
                 tag = text
                 articles = []
                 getQiitaArticles()
+                print("サーチelse...articles.count: ",articles.count)
+                emptyLabel.isHidden = false
             }
         }
         self.tableView.reloadData()
+
         }
+    func configureRefreshControl () {
+       //RefreshControlを追加する処理
+       tableView.refreshControl = UIRefreshControl()
+       tableView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+    }
+
+    @objc func handleRefreshControl() {
+        print("================リフレッシュ処理================")
+        articles = []
+        self.page = 1
+        getQiitaArticles()
+//        更新したい処理をここに記入（データの受け取りなど）
+       //上記の処理が終了したら下記が実行されます。
+       DispatchQueue.main.async {
+          self.tableView.reloadData()  //TableViewの中身を更新する場合はここでリロード処理
+          self.tableView.refreshControl?.endRefreshing()  //これを必ず記載すること
+       }
+    }
     }
