@@ -10,15 +10,14 @@ import Alamofire
 import AVFoundation
 import RxSwift
 import RxCocoa
+import WebKit
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     
     @IBOutlet weak var tableView: UITableView!
-    
     @IBOutlet weak var button: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
-    
     @IBOutlet weak var emptyLabel: UILabel!
     
     
@@ -35,6 +34,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     ]
 
     let decoder: JSONDecoder = JSONDecoder()
+    let encoder: JSONEncoder = JSONEncoder()
     let format = DateFormatter()
     let formatstr = DateFormatter()
     let iso8601DateFormatter = ISO8601DateFormatter()
@@ -54,6 +54,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     private var viewArticles: [QiitaArticle] = []
     var num:Int = 0
     var test = 0
+    var free = ""
     var isLoading = false
     enum LoadStatus {
         case initial
@@ -75,6 +76,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableView.rowHeight = 80
         configureRefreshControl()  //この関数を実行することで更新処理がスタート
         getQiitaArticles()
+        
         emptyLabel.isHidden = bool
         if self.articles.count == 0 {
             emptyLabel.isHidden = true
@@ -82,7 +84,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             emptyLabel.isHidden = false
         }
         button.addAction(.init { _ in self.getQiitaArticles() }, for: .touchUpInside)
-
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let currentOffsetY = scrollView.contentOffset.y
@@ -176,9 +177,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let authorColon = "著者: " + article.user.id
         let postedColon = "投稿日: " + dateStr
         let titleColon = "タイトル: " + article.title
-        // ⑨cellへの反映
-        cell.set(title: titleColon, author: authorColon, posted: postedColon)
+        
+//        if article.body.contains(free){
+//           cell.set(title: titleColon, author: authorColon, posted: postedColon)
+//        }
 
+//         ⑨cellへの反映
+        cell.set(title: titleColon, author: authorColon, posted: postedColon)
+//        print("サーチ処理押下後動作確認")
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -188,6 +194,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             webViewController.url = article.url
             navigationController?.pushViewController(webViewController, animated: true)
     }
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchBar.text {
             print("===================サーチ処理=========================")
@@ -202,12 +209,34 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 print("サーチ処理中のarticles.count" ,self.articles.count)
                 self.page = self.escapePage
                 self.per_page = 10
-                
             }else{
                 self.page = 1
-                tag = text
+                let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
+                guard let viewController = storyboard.instantiateInitialViewController() as? WebViewController else { return }
+                viewController.url = "https://qiita.com/search?q=" + text  //←こんな感じで
+                navigationController?.pushViewController(viewController, animated: true)
+//                let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
+//                let url = URL(string: "https://qiita.com/search?q=" + String(text))!
+//                URL(string: "https://google.com")!
+//                let webViewController = storyboard.instantiateInitialViewController() as! WebViewController
+//                let article = articles[indexPath.row]
+//                webViewController.url = "https://qiita.com/search?q=日本"
+//                print("elsenil確認: ", webViewController.url)__
+//                let urlRequest = URLRequest(url: url)
+//                let request = URLRequest(url: url!)
+//                webViewController.webView.load(request)
+//                webView.load(urlRequest)
+//                navigationController?.pushViewController(webViewController, animated: true)
+                
+//                navigationController?.pushViewController(webViewController, animated: true)
+//                let data = try encoder.encode(text)
+//                test = text.encoder.encode
+//                viewArticles = try self.decoder.decode([QiitaArticle].self, from: response.data!)
                 articles = []
                 getQiitaArticles()
+//                if article.title.contains(text){
+//
+//                }
                 print("サーチelse...articles.count: ",articles.count)
                 emptyLabel.isHidden = false
             }

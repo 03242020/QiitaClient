@@ -8,6 +8,7 @@
 import Foundation
 
 struct QiitaArticle: Codable {
+    let body: String
     let title: String
     let url: String
     let created_at:String
