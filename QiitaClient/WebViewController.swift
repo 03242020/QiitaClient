@@ -43,13 +43,13 @@ class WebViewController: UIViewController, WKNavigationDelegate {
 //        view.transform = CGAffineTransform(translationX: 0, y: 150)
         // ②googleのページからプロパティのurlに変更
         let url = URL(string: self.url)
-        print(url)
+        print("受け渡し: ", url)
         let request = URLRequest(url: url!)
         webView.load(request)
         
     }
-    private func openURL(_ string: String?) {
-    guard let string = string else { return }  //実際にはreturnするだけでなく何かしらのエラーメッセージが出るようにする
+    public func openURL(_ string: String?) {
+        guard string != nil else { return }  //実際にはreturnするだけでなく何かしらのエラーメッセージが出るようにする
     let url = URL(string: url)!
     let request = URLRequest(url: url)
     webView.load(request)

@@ -213,8 +213,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 self.page = 1
                 let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
                 guard let viewController = storyboard.instantiateInitialViewController() as? WebViewController else { return }
-                viewController.url = "https://qiita.com/search?q=" + text  //←こんな感じで
+                let itemString = String(text)
+                let itemEncodeString = itemString.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+                let urlString = "https://qiita.com/search?q=\(itemEncodeString!)"
+                viewController.url = urlString
                 navigationController?.pushViewController(viewController, animated: true)
+                viewController.openURL(viewController.url)
+//                viewController.url = "https://qiita.com/search?q=" + "日本"  //←こんな感じで
+
+//                let url = "https://qiita.com/search?q=" + String(text)
+//                let itemString = "スコーピオン"
+//                let itemEncodeString = itemString.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+//                let urlString = "https://search.rakuten.co.jp/search/mall/\(itemEncodeString!)"
+
+//                print("itemEncodeString: \(itemEncodeString!)") // itemEncodeString: %E3%82%B9%E3%82%B3%E3%83%BC%E3%83%94%E3%82%AA%E3%83%B3
+//                print("Result URL: \(URL(string: urlString)!.absoluteString)") // Result URL: https://search.rakuten.co.jp/search/mall/%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%94%E3%82%AA%E3%83%B3
+//                navigationController?.pushViewController(viewController, animated: true)
 //                let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
 //                let url = URL(string: "https://qiita.com/search?q=" + String(text))!
 //                URL(string: "https://google.com")!
@@ -232,8 +246,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 //                let data = try encoder.encode(text)
 //                test = text.encoder.encode
 //                viewArticles = try self.decoder.decode([QiitaArticle].self, from: response.data!)
-                articles = []
-                getQiitaArticles()
+//                articles = []
+//                getQiitaArticles()
 //                if article.title.contains(text){
 //
 //                }
