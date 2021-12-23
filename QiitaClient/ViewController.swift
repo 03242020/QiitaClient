@@ -263,6 +263,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
        tableView.refreshControl = UIRefreshControl()
        tableView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
+    
+
 
     @objc func handleRefreshControl() {
         print("================リフレッシュ処理================")
@@ -277,3 +279,64 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
        }
     }
     }
+
+//class FirstViewController: UIViewController {
+//    lazy var centerLabel: UILabel = {
+//        let label = UILabel()
+//        label.text = "First"
+//        label.font = UIFont.boldSystemFont(ofSize: 70.0)
+//        label.textColor = UIColor.white
+//        return label
+//    }()
+//
+//    override func loadView() {
+//        view = UIView()
+//        view.backgroundColor = .blue
+//
+//        centerLabel.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(centerLabel)
+//        NSLayoutConstraint.activate([
+//            centerLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+//            centerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+//        ])
+//    }
+//}
+
+//class SecondViewController: UIViewController {
+//    lazy var centerLabel: UILabel = {
+//        let label = UILabel()
+//        label.text = "Second"
+//        label.font = UIFont.boldSystemFont(ofSize: 70.0)
+//        label.textColor = UIColor.white
+//        return label
+//    }()
+//
+//    override func loadView() {
+//        view = UIView()
+//        view.backgroundColor = .brown
+//
+//        centerLabel.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(centerLabel)
+//        NSLayoutConstraint.activate([
+//            centerLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+//            centerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+//        ])
+//    }
+//}
+
+//class MainTabBarController: UITabBarController {
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        setupTab()
+//    }
+//}
+
+//private extension MainTabBarController {
+//    func setupTab() {
+//        let firstViewController = ViewController()
+//        firstViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .history, tag: 0)
+//        let secondViewController = SecondViewController()
+//        secondViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .downloads, tag: 0)
+//        viewControllers = [firstViewController, secondViewController]
+//    }
+//}
