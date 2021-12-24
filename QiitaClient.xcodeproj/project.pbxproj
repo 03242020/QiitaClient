@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE0B31F227747BB4002C7C77 /* tabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B31F127747BB4002C7C77 /* tabBarViewController.swift */; };
+		BE0B31F42775635E002C7C77 /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B31F32775635E002C7C77 /* TagViewController.swift */; };
 		BE8789A427585EAB007902F5 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8789A327585EAB007902F5 /* APIService.swift */; };
 		BE8789A6276050E0007902F5 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8789A5276050E0007902F5 /* test.swift */; };
 		BE8789A8276050ED007902F5 /* test.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE8789A7276050ED007902F5 /* test.storyboard */; };
@@ -31,6 +33,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BE0B31F127747BB4002C7C77 /* tabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tabBarViewController.swift; sourceTree = "<group>"; };
+		BE0B31F32775635E002C7C77 /* TagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
 		BE8789A327585EAB007902F5 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		BE8789A5276050E0007902F5 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		BE8789A7276050ED007902F5 /* test.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = test.storyboard; sourceTree = "<group>"; };
@@ -95,6 +99,8 @@
 				BE95927B2755C1A300A2B211 /* QiitaArticle.swift */,
 				BE959254274F816C00A2B211 /* SceneDelegate.swift */,
 				BE959256274F816C00A2B211 /* ViewController.swift */,
+				BE0B31F32775635E002C7C77 /* TagViewController.swift */,
+				BE0B31F127747BB4002C7C77 /* tabBarViewController.swift */,
 				BEDC2DB5276AD09700EEC5EA /* ViewReactor.swift */,
 				BE8789A327585EAB007902F5 /* APIService.swift */,
 				BE95926A27546C2800A2B211 /* WebViewController.swift */,
@@ -207,9 +213,11 @@
 				BE959253274F816C00A2B211 /* AppDelegate.swift in Sources */,
 				BE959269274F8E5500A2B211 /* QiitaTableViewCell.swift in Sources */,
 				BE8789A6276050E0007902F5 /* test.swift in Sources */,
+				BE0B31F227747BB4002C7C77 /* tabBarViewController.swift in Sources */,
 				BE95926B27546C2800A2B211 /* WebViewController.swift in Sources */,
 				BE959255274F816C00A2B211 /* SceneDelegate.swift in Sources */,
 				BE8789A427585EAB007902F5 /* APIService.swift in Sources */,
+				BE0B31F42775635E002C7C77 /* TagViewController.swift in Sources */,
 				BE9592782754D87400A2B211 /* QiitaUser.swift in Sources */,
 				BEDC2DB6276AD09700EEC5EA /* ViewReactor.swift in Sources */,
 			);

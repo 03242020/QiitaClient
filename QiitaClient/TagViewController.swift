@@ -1,8 +1,8 @@
 //
-//  ViewController.swift
+//  TagViewController.swift
 //  QiitaClient
 //
-//  Created by ryo.inomata on 2021/11/25.
+//  Created by ryo.inomata on 2021/12/24.
 //
 
 import UIKit
@@ -12,12 +12,15 @@ import RxSwift
 import RxCocoa
 import WebKit
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UITabBarDelegate {
+class TagViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UITabBarDelegate {
     
+    
+//    @IBOutlet weak var tableView: UITableView!
+//    @IBOutlet weak var button: UIButton!
+//    @IBOutlet weak var searchBar: UISearchBar!
+//    @IBOutlet weak var emptyLabel: UILabel!
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var button: UIButton!
-    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var emptyLabel: UILabel!
     
     
@@ -67,7 +70,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        searchBar.delegate = self //　追記
+//        searchBar.delegate = self //　追記
         tableView.dataSource = self
         tableView.delegate = self // この行を追加
         formatstr.dateFormat = "yyyy-MM-dd"
@@ -85,16 +88,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }else{
             emptyLabel.isHidden = false
         }
-        button.addAction(.init { _ in self.getQiitaArticles() }, for: .touchUpInside)
+//        button.addAction(.init { _ in self.getQiitaArticles() }, for: .touchUpInside)
         //===============
         print()
-        if tabTag == 1 {
-            searchBar.isHidden = true
-        }
+//        if tabTag == 1 {
+//            searchBar.isHidden = true
+//        }
 //        searchBar.isHidden = true
         //================
-        
     }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let currentOffsetY = scrollView.contentOffset.y
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.height

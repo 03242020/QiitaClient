@@ -70,15 +70,16 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZnS-Wq-p7V" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1491" y="29"/>
+            <point key="canvasLocation" x="-1899" y="29"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tab Bar View Controller-->
         <scene sceneID="wvF-ae-K4y">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="L7h-rs-6Xa" sceneMemberID="viewController">
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="L7h-rs-6Xa" customClass="tabBarViewController" customModule="QiitaClient" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="6Zk-ee-Z1E"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="uRA-3J-LRA">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
@@ -89,12 +90,12 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cee-c4-qpc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-420.28985507246381" y="28.794642857142854"/>
+            <point key="canvasLocation" x="-736" y="29"/>
         </scene>
         <!--Item-->
         <scene sceneID="u9h-4O-nle">
             <objects>
-                <viewController id="fTP-hd-b49" customClass="ViewController" customModule="QiitaClient" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="fTP-hd-b49" customClass="TagViewController" customModule="QiitaClient" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Y5L-rn-OJt">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -103,11 +104,6 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="734"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" id="aHj-87-fDd">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                </searchBar>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="pOO-2P-XjS">
                                 <rect key="frame" x="318" y="818" width="76" height="83"/>
@@ -129,10 +125,8 @@
                     <tabBarItem key="tabBarItem" title="Item" id="0QB-T7-pdT"/>
                     <navigationItem key="navigationItem" id="JDp-Cb-bLk"/>
                     <connections>
-                        <outlet property="button" destination="pOO-2P-XjS" id="5Jk-GS-6oK"/>
-                        <outlet property="emptyLabel" destination="inV-eM-ifG" id="RtL-ko-Imw"/>
-                        <outlet property="searchBar" destination="aHj-87-fDd" id="gvv-yV-F7w"/>
-                        <outlet property="tableView" destination="6dR-oM-0hU" id="fMG-To-Wc1"/>
+                        <outlet property="emptyLabel" destination="inV-eM-ifG" id="yyR-Me-mh8"/>
+                        <outlet property="tableView" destination="6dR-oM-0hU" id="OF1-pe-qpA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kCX-L8-FRb" sceneMemberID="firstResponder"/>
