@@ -20,13 +20,8 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
     @IBOutlet weak var buttonKotlin: UIButton!
     @IBOutlet weak var buttonJava: UIButton!
     
-    
     var disposeBag = DisposeBag()
     
-    let username = "ryo_inomata"
-    let password = "1q1q1q1q"
-
-
     var token = "daac5dc84737855447811d2982becb4afb2d688d"
 
     let Auth_header: HTTPHeaders = [
@@ -84,18 +79,35 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
         }else{
             emptyLabel.isHidden = false
         }
-        buttonIos.addAction(.init { _ in
-            self.tag = "iOS"
-            self.articles = []
-            self.getQiitaArticles() }, for: .touchUpInside)
-        buttonKotlin.addAction(.init { _ in
-            self.tag = "Kotlin"
-            self.articles = []
-            self.getQiitaArticles() }, for: .touchUpInside)
-        buttonJava.addAction(.init { _ in
-            self.tag = "Java"
-            self.articles = []
-            self.getQiitaArticles() }, for: .touchUpInside)
+        
+        //現状非同期にしたは良いが、押下と同時にスクロールすると自動読み込みとタイミングがぶつかり配列エラーになる。同期をズラす必要性がある。
+        buttonIos.rx.tap.subscribe(onNext:{[weak self] in
+            self!.tag = "iOS"
+            self!.articles = []
+            self!.getQiitaArticles()
+        }).disposed(by: disposeBag)
+//        buttonIos.addAction(.init { _ in
+//            self.tag = "iOS"
+//            self.articles = []
+//            self.getQiitaArticles() }, for: .touchUpInside)
+        buttonKotlin.rx.tap.subscribe(onNext:{[weak self] in
+            self!.tag = "Kotlin"
+            self!.articles = []
+            self!.getQiitaArticles()
+        }).disposed(by: disposeBag)
+//        buttonKotlin.addAction(.init { _ in
+//            self.tag = "Kotlin"
+//            self.articles = []
+//            self.getQiitaArticles() }, for: .touchUpInside)
+        buttonJava.rx.tap.subscribe(onNext:{[weak self] in
+            self!.tag = "Java"
+            self!.articles = []
+            self!.getQiitaArticles()
+        }).disposed(by: disposeBag)
+//        buttonJava.addAction(.init { _ in
+//            self.tag = "Java"
+//            self.articles = []
+//            self.getQiitaArticles() }, for: .touchUpInside)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
