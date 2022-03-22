@@ -41,14 +41,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var datas:[Data] = []
       //表示ステータス
     var displayStatus:String = "standby"
-    //現在取得しているセル数
+//    現在取得しているセル数
     private var page: Int = 1
     private var escapePage: Int = 0
     private var per_page: Int = 10
     private var tag: String = "iOS"
     public var tabTag = 0
     
-    //必要以上のapi叩かない様にする
+//    必要以上のapi叩かない様にする
     private var loadStatus: String = "initial"
     
     private var articles: [QiitaArticle] = [] // ②取得した記事一覧を保持しておくプロパティ
@@ -115,7 +115,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
 
-    // loadする関数の定義
+//     loadする関数の定義
     private func getQiitaArticles() {
         guard loadStatus != "fetching" && loadStatus != "full" else { return }
         loadStatus = "fetching"
@@ -127,10 +127,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 do {
                     print("page: " + String(self.page))
                     self.loadStatus = "loadmore"
-                    //今のままだと全部上書きされているのでaddにしないといけない。 articlesを消えないように保持する。初期化するときはリフレッシュの時だけにする。
-
                     viewArticles = try self.decoder.decode([QiitaArticle].self, from: response.data!)
-
                     if self.page == 100 {
                         self.loadStatus = "full"
                     }
@@ -164,7 +161,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "QiitaTableViewCell", for: indexPath) as? QiitaTableViewCell else {
             return UITableViewCell()
         }
-        // ⑧indexPathを用いてarticlesから該当のarticleを取得する
         let article = articles[indexPath.row]
 //        print(type(of: article.created_at))
 
@@ -186,7 +182,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let postedColon = "投稿日: " + dateStr
         let titleColon = "タイトル: " + article.title
 
-//         ⑨cellへの反映
         cell.set(title: titleColon, author: authorColon, posted: postedColon)
 //        print("サーチ処理押下後動作確認")
         return cell
