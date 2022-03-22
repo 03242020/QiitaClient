@@ -1,8 +1,8 @@
 //
-//  ViewController.swift
+//  TagViewController.swift
 //  QiitaClient
 //
-//  Created by ryo.inomata on 2021/11/25.
+//  Created by ryo.inomata on 2021/12/24.
 //
 
 import UIKit
@@ -11,23 +11,24 @@ import AVFoundation
 import RxSwift
 import RxCocoa
 import WebKit
-import os
 
-let logger = Logger(subsystem: "com.inomata.QiitaClient", category: "Network")
-
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UITabBarDelegate {
+class TagViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UITabBarDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var emptyLabel: UILabel!
+    @IBOutlet weak var buttonIos: UIButton!
+    @IBOutlet weak var buttonKotlin: UIButton!
+    @IBOutlet weak var buttonJava: UIButton!
+    
     
     var disposeBag = DisposeBag()
+    
+    let username = "ryo_inomata"
+    let password = "1q1q1q1q"
 
-//    現状自分自身のトークンをそのまま入れてる。こちらをユーザーに入力させるフィールドを作成したい。
-//    POST /api/v2/access_tokens 与えられた認証情報をもとに新しいアクセストークンを発行してくれるらしい。こちらでログイン機能を作成できないか。
+
     var token = "daac5dc84737855447811d2982becb4afb2d688d"
 
-    //QiitaAPI制限を1時間1000回に増やす。ベアラー認証。
     let Auth_header: HTTPHeaders = [
         "Authorization" : "Bearer daac5dc84737855447811d2982becb4afb2d688d"
     ]
@@ -50,12 +51,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     //必要以上のapi叩かない様にする
     private var loadStatus: String = "initial"
-    
     private var articles: [QiitaArticle] = [] // ②取得した記事一覧を保持しておくプロパティ
     var bool = true
     private var viewArticles: [QiitaArticle] = []
     var num:Int = 0
-    var countStack = 0
+    var test = 0
     var free = ""
     var isLoading = false
     enum LoadStatus {
@@ -67,16 +67,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        searchBar.delegate = self
         tableView.dataSource = self
-        tableView.delegate = self
+        tableView.delegate = self // この行を追加
         formatstr.dateFormat = "yyyy-MM-dd"
         format.dateFormat = "yyyy-MM-dd'T'HH:mm:ssXXX"
         
         let nib = UINib(nibName: "QiitaTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "QiitaTableViewCell")
         tableView.rowHeight = 80
-        configureRefreshControl()  
+        configureRefreshControl()  //この関数を実行することで更新処理がスタート
         getQiitaArticles()
         
         emptyLabel.isHidden = bool
@@ -85,31 +84,33 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }else{
             emptyLabel.isHidden = false
         }
-
-        if tabTag == 1 {
-            searchBar.isHidden = true
-        }
+        buttonIos.addAction(.init { _ in
+            self.tag = "iOS"
+            self.articles = []
+            self.getQiitaArticles() }, for: .touchUpInside)
+        buttonKotlin.addAction(.init { _ in
+            self.tag = "Kotlin"
+            self.articles = []
+            self.getQiitaArticles() }, for: .touchUpInside)
+        buttonJava.addAction(.init { _ in
+            self.tag = "Java"
+            self.articles = []
+            self.getQiitaArticles() }, for: .touchUpInside)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let currentOffsetY = scrollView.contentOffset.y
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.height
         let distanceToBottom = maximumOffset - currentOffsetY
-//        print("===========スクロール処理===========")
-//        print("maximumOffset: ",maximumOffset)
-//        print("currentOffset.y: ",scrollView.contentOffset.y)
-//        print("contentSize.height: ",scrollView.contentSize.height)
-//        print("frame.height: ",scrollView.frame.height)
-//        print("distanceToBottom: ",distanceToBottom)
-        
-        if(countStack != articles.count) {
+        print("===========スクロール処理===========")
+        print("maximumOffset: ",maximumOffset)
+        print("currentOffset.y: ",scrollView.contentOffset.y)
+        print("contentSize.height: ",scrollView.contentSize.height)
+        print("frame.height: ",scrollView.frame.height)
+        print("distanceToBottom: ",distanceToBottom)
         print("articles.count: ",articles.count)
-        }
-        countStack = articles.count
-//        print("currentOffsetY: \(currentOffsetY)")
-//        print("maximumOffset: \(maximumOffset)")
-//        print("distanceToBottom: \(distanceToBottom)")
         if distanceToBottom < 50 {
+
             getQiitaArticles()
 //            print("articles.count: ",articles.count)
         }
@@ -143,6 +144,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                     }
                     
                     self.page += 1 //pageを+1する処理
+                    print("count: " + String(self.articles.count))
                     self.tableView.reloadData()
                 } catch {
                     self.loadStatus = "error"
@@ -164,10 +166,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "QiitaTableViewCell", for: indexPath) as? QiitaTableViewCell else {
             return UITableViewCell()
         }
+        
         // ⑧indexPathを用いてarticlesから該当のarticleを取得する
         let article = articles[indexPath.row]
 //        print(type(of: article.created_at))
-
 
         // ロケール設定（端末の暦設定に引きづられないようにする）
         format.locale = Locale(identifier: "en_US_POSIX")
@@ -201,7 +203,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchBar.text {
-            print("===================サーチ処理=========================")
             if text == "" {
                 self.page -= 1
                 articles = []
@@ -223,9 +224,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 viewController.url = urlString
                 navigationController?.pushViewController(viewController, animated: true)
                 viewController.openURL(viewController.url)
-
                 print("サーチelse...articles.count: ",articles.count)
-//                emptyLabel.isHidden = false
             }
         }
         self.tableView.reloadData()
@@ -240,13 +239,44 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
 
     @objc func handleRefreshControl() {
+        print("================リフレッシュ処理================")
         articles = []
         self.page = 1
         getQiitaArticles()
+//        更新したい処理をここに記入（データの受け取りなど）
+       //上記の処理が終了したら下記が実行されます。
        DispatchQueue.main.async {
-//           TableViewの中身を更新する場合はここでリロード処理
-          self.tableView.reloadData()
-          self.tableView.refreshControl?.endRefreshing()
+          self.tableView.reloadData()  //TableViewの中身を更新する場合はここでリロード処理
+          self.tableView.refreshControl?.endRefreshing()  //これを必ず記載すること
        }
     }
+    
+
     }
+//============================================================
+
+
+class TagLabel: UILabel {
+
+    let tagPadding: CGFloat = 5
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        layer.cornerRadius = 2
+        layer.borderColor = UIColor.black.cgColor
+        layer.borderWidth = 1
+        textColor = UIColor.black
+        clipsToBounds = true
+        numberOfLines = 1
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func draw(_ rect: CGRect) {
+        let insets = UIEdgeInsets(top: tagPadding, left: tagPadding, bottom: tagPadding, right: tagPadding)
+        return super.drawText(in: rect.inset(by: insets))
+    }
+}
