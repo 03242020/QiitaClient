@@ -11,24 +11,23 @@ import AVFoundation
 import RxSwift
 import RxCocoa
 import WebKit
+import os
+
+let logger = Logger(subsystem: "com.inomata.QiitaClient", category: "Network")
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UITabBarDelegate {
     
-    
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var button: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var emptyLabel: UILabel!
     
-    
     var disposeBag = DisposeBag()
-    
-    let username = "ryo_inomata"
-    let password = "1q1q1q1q"
 
-
+//    現状自分自身のトークンをそのまま入れてる。こちらをユーザーに入力させるフィールドを作成したい。
+//    POST /api/v2/access_tokens 与えられた認証情報をもとに新しいアクセストークンを発行してくれるらしい。こちらでログイン機能を作成できないか。
     var token = "daac5dc84737855447811d2982becb4afb2d688d"
 
+    //QiitaAPI制限を1時間1000回に増やす。ベアラー認証。
     let Auth_header: HTTPHeaders = [
         "Authorization" : "Bearer daac5dc84737855447811d2982becb4afb2d688d"
     ]
@@ -51,11 +50,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     //必要以上のapi叩かない様にする
     private var loadStatus: String = "initial"
+    
     private var articles: [QiitaArticle] = [] // ②取得した記事一覧を保持しておくプロパティ
     var bool = true
     private var viewArticles: [QiitaArticle] = []
     var num:Int = 0
-    var test = 0
+    var countStack = 0
     var free = ""
     var isLoading = false
     enum LoadStatus {
@@ -67,16 +67,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        searchBar.delegate = self //　追記
+        searchBar.delegate = self
         tableView.dataSource = self
-        tableView.delegate = self // この行を追加
+        tableView.delegate = self
         formatstr.dateFormat = "yyyy-MM-dd"
         format.dateFormat = "yyyy-MM-dd'T'HH:mm:ssXXX"
         
         let nib = UINib(nibName: "QiitaTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "QiitaTableViewCell")
         tableView.rowHeight = 80
-        configureRefreshControl()  //この関数を実行することで更新処理がスタート
+        configureRefreshControl()  
         getQiitaArticles()
         
         emptyLabel.isHidden = bool
@@ -85,32 +85,31 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }else{
             emptyLabel.isHidden = false
         }
-        button.addAction(.init { _ in self.getQiitaArticles() }, for: .touchUpInside)
-        //===============
-        print()
+
         if tabTag == 1 {
             searchBar.isHidden = true
         }
-//        searchBar.isHidden = true
-        //================
-        
     }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let currentOffsetY = scrollView.contentOffset.y
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.height
         let distanceToBottom = maximumOffset - currentOffsetY
-        print("===========スクロール処理===========")
-        print("maximumOffset: ",maximumOffset)
-        print("currentOffset.y: ",scrollView.contentOffset.y)
-        print("contentSize.height: ",scrollView.contentSize.height)
-        print("frame.height: ",scrollView.frame.height)
-        print("distanceToBottom: ",distanceToBottom)
+//        print("===========スクロール処理===========")
+//        print("maximumOffset: ",maximumOffset)
+//        print("currentOffset.y: ",scrollView.contentOffset.y)
+//        print("contentSize.height: ",scrollView.contentSize.height)
+//        print("frame.height: ",scrollView.frame.height)
+//        print("distanceToBottom: ",distanceToBottom)
+        
+        if(countStack != articles.count) {
         print("articles.count: ",articles.count)
+        }
+        countStack = articles.count
 //        print("currentOffsetY: \(currentOffsetY)")
 //        print("maximumOffset: \(maximumOffset)")
 //        print("distanceToBottom: \(distanceToBottom)")
         if distanceToBottom < 50 {
-
             getQiitaArticles()
 //            print("articles.count: ",articles.count)
         }
@@ -144,7 +143,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                     }
                     
                     self.page += 1 //pageを+1する処理
-                    print("count: " + String(self.articles.count))
                     self.tableView.reloadData()
                 } catch {
                     self.loadStatus = "error"
@@ -187,10 +185,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let authorColon = "著者: " + article.user.id
         let postedColon = "投稿日: " + dateStr
         let titleColon = "タイトル: " + article.title
-        
-//        if article.body.contains(free){
-//           cell.set(title: titleColon, author: authorColon, posted: postedColon)
-//        }
 
 //         ⑨cellへの反映
         cell.set(title: titleColon, author: authorColon, posted: postedColon)
@@ -229,40 +223,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 viewController.url = urlString
                 navigationController?.pushViewController(viewController, animated: true)
                 viewController.openURL(viewController.url)
-//                viewController.url = "https://qiita.com/search?q=" + "日本"  //←こんな感じで
 
-//                let url = "https://qiita.com/search?q=" + String(text)
-//                let itemString = "スコーピオン"
-//                let itemEncodeString = itemString.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
-//                let urlString = "https://search.rakuten.co.jp/search/mall/\(itemEncodeString!)"
-
-//                print("itemEncodeString: \(itemEncodeString!)") // itemEncodeString: %E3%82%B9%E3%82%B3%E3%83%BC%E3%83%94%E3%82%AA%E3%83%B3
-//                print("Result URL: \(URL(string: urlString)!.absoluteString)") // Result URL: https://search.rakuten.co.jp/search/mall/%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%94%E3%82%AA%E3%83%B3
-//                navigationController?.pushViewController(viewController, animated: true)
-//                let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
-//                let url = URL(string: "https://qiita.com/search?q=" + String(text))!
-//                URL(string: "https://google.com")!
-//                let webViewController = storyboard.instantiateInitialViewController() as! WebViewController
-//                let article = articles[indexPath.row]
-//                webViewController.url = "https://qiita.com/search?q=日本"
-//                print("elsenil確認: ", webViewController.url)__
-//                let urlRequest = URLRequest(url: url)
-//                let request = URLRequest(url: url!)
-//                webViewController.webView.load(request)
-//                webView.load(urlRequest)
-//                navigationController?.pushViewController(webViewController, animated: true)
-                
-//                navigationController?.pushViewController(webViewController, animated: true)
-//                let data = try encoder.encode(text)
-//                test = text.encoder.encode
-//                viewArticles = try self.decoder.decode([QiitaArticle].self, from: response.data!)
-//                articles = []
-//                getQiitaArticles()
-//                if article.title.contains(text){
-//
-//                }
                 print("サーチelse...articles.count: ",articles.count)
-                emptyLabel.isHidden = false
+//                emptyLabel.isHidden = false
             }
         }
         self.tableView.reloadData()
@@ -277,76 +240,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
 
     @objc func handleRefreshControl() {
-        print("================リフレッシュ処理================")
         articles = []
         self.page = 1
         getQiitaArticles()
-//        更新したい処理をここに記入（データの受け取りなど）
-       //上記の処理が終了したら下記が実行されます。
        DispatchQueue.main.async {
-          self.tableView.reloadData()  //TableViewの中身を更新する場合はここでリロード処理
-          self.tableView.refreshControl?.endRefreshing()  //これを必ず記載すること
+//           TableViewの中身を更新する場合はここでリロード処理
+          self.tableView.reloadData()
+          self.tableView.refreshControl?.endRefreshing()
        }
     }
     }
-
-//class FirstViewController: UIViewController {
-//    lazy var centerLabel: UILabel = {
-//        let label = UILabel()
-//        label.text = "First"
-//        label.font = UIFont.boldSystemFont(ofSize: 70.0)
-//        label.textColor = UIColor.white
-//        return label
-//    }()
-//
-//    override func loadView() {
-//        view = UIView()
-//        view.backgroundColor = .blue
-//
-//        centerLabel.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(centerLabel)
-//        NSLayoutConstraint.activate([
-//            centerLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-//            centerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-//        ])
-//    }
-//}
-
-//class SecondViewController: UIViewController {
-//    lazy var centerLabel: UILabel = {
-//        let label = UILabel()
-//        label.text = "Second"
-//        label.font = UIFont.boldSystemFont(ofSize: 70.0)
-//        label.textColor = UIColor.white
-//        return label
-//    }()
-//
-//    override func loadView() {
-//        view = UIView()
-//        view.backgroundColor = .brown
-//
-//        centerLabel.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(centerLabel)
-//        NSLayoutConstraint.activate([
-//            centerLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-//            centerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-//        ])
-//    }
-//}
-
-//class MainTabBarController: UITabBarController {
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        setupTab()
-//    }
-//}
-
-//private extension MainTabBarController {
-//    func setupTab() {
-//        let firstViewController = ViewController()
-//        firstViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .history, tag: 0)
-//        let secondViewController = SecondViewController()
-//        secondViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .downloads, tag: 0)
-//        viewControllers = [firstViewController, secondViewController]
-//    }
-//}

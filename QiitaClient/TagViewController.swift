@@ -14,14 +14,11 @@ import WebKit
 
 class TagViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UITabBarDelegate {
     
-    
-//    @IBOutlet weak var tableView: UITableView!
-//    @IBOutlet weak var button: UIButton!
-//    @IBOutlet weak var searchBar: UISearchBar!
-//    @IBOutlet weak var emptyLabel: UILabel!
-    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var emptyLabel: UILabel!
+    @IBOutlet weak var buttonIos: UIButton!
+    @IBOutlet weak var buttonKotlin: UIButton!
+    @IBOutlet weak var buttonJava: UIButton!
     
     
     var disposeBag = DisposeBag()
@@ -70,7 +67,6 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        searchBar.delegate = self //　追記
         tableView.dataSource = self
         tableView.delegate = self // この行を追加
         formatstr.dateFormat = "yyyy-MM-dd"
@@ -88,14 +84,18 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
         }else{
             emptyLabel.isHidden = false
         }
-//        button.addAction(.init { _ in self.getQiitaArticles() }, for: .touchUpInside)
-        //===============
-        print()
-//        if tabTag == 1 {
-//            searchBar.isHidden = true
-//        }
-//        searchBar.isHidden = true
-        //================
+        buttonIos.addAction(.init { _ in
+            self.tag = "iOS"
+            self.articles = []
+            self.getQiitaArticles() }, for: .touchUpInside)
+        buttonKotlin.addAction(.init { _ in
+            self.tag = "Kotlin"
+            self.articles = []
+            self.getQiitaArticles() }, for: .touchUpInside)
+        buttonJava.addAction(.init { _ in
+            self.tag = "Java"
+            self.articles = []
+            self.getQiitaArticles() }, for: .touchUpInside)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -109,9 +109,6 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
         print("frame.height: ",scrollView.frame.height)
         print("distanceToBottom: ",distanceToBottom)
         print("articles.count: ",articles.count)
-//        print("currentOffsetY: \(currentOffsetY)")
-//        print("maximumOffset: \(maximumOffset)")
-//        print("distanceToBottom: \(distanceToBottom)")
         if distanceToBottom < 50 {
 
             getQiitaArticles()
@@ -169,10 +166,10 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "QiitaTableViewCell", for: indexPath) as? QiitaTableViewCell else {
             return UITableViewCell()
         }
+        
         // ⑧indexPathを用いてarticlesから該当のarticleを取得する
         let article = articles[indexPath.row]
 //        print(type(of: article.created_at))
-
 
         // ロケール設定（端末の暦設定に引きづられないようにする）
         format.locale = Locale(identifier: "en_US_POSIX")
@@ -190,10 +187,6 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
         let authorColon = "著者: " + article.user.id
         let postedColon = "投稿日: " + dateStr
         let titleColon = "タイトル: " + article.title
-        
-//        if article.body.contains(free){
-//           cell.set(title: titleColon, author: authorColon, posted: postedColon)
-//        }
 
 //         ⑨cellへの反映
         cell.set(title: titleColon, author: authorColon, posted: postedColon)
@@ -210,7 +203,6 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchBar.text {
-            print("===================サーチ処理=========================")
             if text == "" {
                 self.page -= 1
                 articles = []
@@ -232,40 +224,7 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
                 viewController.url = urlString
                 navigationController?.pushViewController(viewController, animated: true)
                 viewController.openURL(viewController.url)
-//                viewController.url = "https://qiita.com/search?q=" + "日本"  //←こんな感じで
-
-//                let url = "https://qiita.com/search?q=" + String(text)
-//                let itemString = "スコーピオン"
-//                let itemEncodeString = itemString.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
-//                let urlString = "https://search.rakuten.co.jp/search/mall/\(itemEncodeString!)"
-
-//                print("itemEncodeString: \(itemEncodeString!)") // itemEncodeString: %E3%82%B9%E3%82%B3%E3%83%BC%E3%83%94%E3%82%AA%E3%83%B3
-//                print("Result URL: \(URL(string: urlString)!.absoluteString)") // Result URL: https://search.rakuten.co.jp/search/mall/%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%94%E3%82%AA%E3%83%B3
-//                navigationController?.pushViewController(viewController, animated: true)
-//                let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
-//                let url = URL(string: "https://qiita.com/search?q=" + String(text))!
-//                URL(string: "https://google.com")!
-//                let webViewController = storyboard.instantiateInitialViewController() as! WebViewController
-//                let article = articles[indexPath.row]
-//                webViewController.url = "https://qiita.com/search?q=日本"
-//                print("elsenil確認: ", webViewController.url)__
-//                let urlRequest = URLRequest(url: url)
-//                let request = URLRequest(url: url!)
-//                webViewController.webView.load(request)
-//                webView.load(urlRequest)
-//                navigationController?.pushViewController(webViewController, animated: true)
-                
-//                navigationController?.pushViewController(webViewController, animated: true)
-//                let data = try encoder.encode(text)
-//                test = text.encoder.encode
-//                viewArticles = try self.decoder.decode([QiitaArticle].self, from: response.data!)
-//                articles = []
-//                getQiitaArticles()
-//                if article.title.contains(text){
-//
-//                }
                 print("サーチelse...articles.count: ",articles.count)
-                emptyLabel.isHidden = false
             }
         }
         self.tableView.reloadData()
@@ -291,65 +250,33 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
           self.tableView.refreshControl?.endRefreshing()  //これを必ず記載すること
        }
     }
+    
+
+    }
+//============================================================
+
+
+class TagLabel: UILabel {
+
+    let tagPadding: CGFloat = 5
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        layer.cornerRadius = 2
+        layer.borderColor = UIColor.black.cgColor
+        layer.borderWidth = 1
+        textColor = UIColor.black
+        clipsToBounds = true
+        numberOfLines = 1
     }
 
-//class FirstViewController: UIViewController {
-//    lazy var centerLabel: UILabel = {
-//        let label = UILabel()
-//        label.text = "First"
-//        label.font = UIFont.boldSystemFont(ofSize: 70.0)
-//        label.textColor = UIColor.white
-//        return label
-//    }()
-//
-//    override func loadView() {
-//        view = UIView()
-//        view.backgroundColor = .blue
-//
-//        centerLabel.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(centerLabel)
-//        NSLayoutConstraint.activate([
-//            centerLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-//            centerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-//        ])
-//    }
-//}
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
-//class SecondViewController: UIViewController {
-//    lazy var centerLabel: UILabel = {
-//        let label = UILabel()
-//        label.text = "Second"
-//        label.font = UIFont.boldSystemFont(ofSize: 70.0)
-//        label.textColor = UIColor.white
-//        return label
-//    }()
-//
-//    override func loadView() {
-//        view = UIView()
-//        view.backgroundColor = .brown
-//
-//        centerLabel.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(centerLabel)
-//        NSLayoutConstraint.activate([
-//            centerLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-//            centerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-//        ])
-//    }
-//}
-
-//class MainTabBarController: UITabBarController {
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        setupTab()
-//    }
-//}
-
-//private extension MainTabBarController {
-//    func setupTab() {
-//        let firstViewController = ViewController()
-//        firstViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .history, tag: 0)
-//        let secondViewController = SecondViewController()
-//        secondViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .downloads, tag: 0)
-//        viewControllers = [firstViewController, secondViewController]
-//    }
-//}
+    override func draw(_ rect: CGRect) {
+        let insets = UIEdgeInsets(top: tagPadding, left: tagPadding, bottom: tagPadding, right: tagPadding)
+        return super.drawText(in: rect.inset(by: insets))
+    }
+}

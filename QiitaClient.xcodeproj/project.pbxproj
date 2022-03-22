@@ -30,6 +30,7 @@
 		BEDC2DB1276ACCA100EEC5EA /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BEDC2DB0276ACCA100EEC5EA /* RxSwift */; };
 		BEDC2DB4276AD01900EEC5EA /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = BEDC2DB3276AD01900EEC5EA /* ReactorKit */; };
 		BEDC2DB6276AD09700EEC5EA /* ViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDC2DB5276AD09700EEC5EA /* ViewReactor.swift */; };
+		BEFF6B3C27842CAF008EA48C /* TagViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFF6B3B27842CAE008EA48C /* TagViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		BE9592772754D87400A2B211 /* QiitaUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiitaUser.swift; sourceTree = "<group>"; };
 		BE95927B2755C1A300A2B211 /* QiitaArticle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiitaArticle.swift; sourceTree = "<group>"; };
 		BEDC2DB5276AD09700EEC5EA /* ViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewReactor.swift; sourceTree = "<group>"; };
+		BEFF6B3B27842CAE008EA48C /* TagViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 				BE959254274F816C00A2B211 /* SceneDelegate.swift */,
 				BE959256274F816C00A2B211 /* ViewController.swift */,
 				BE0B31F32775635E002C7C77 /* TagViewController.swift */,
+				BEFF6B3B27842CAE008EA48C /* TagViewModel.swift */,
 				BE0B31F127747BB4002C7C77 /* tabBarViewController.swift */,
 				BEDC2DB5276AD09700EEC5EA /* ViewReactor.swift */,
 				BE8789A327585EAB007902F5 /* APIService.swift */,
@@ -217,6 +220,7 @@
 				BE95926B27546C2800A2B211 /* WebViewController.swift in Sources */,
 				BE959255274F816C00A2B211 /* SceneDelegate.swift in Sources */,
 				BE8789A427585EAB007902F5 /* APIService.swift in Sources */,
+				BEFF6B3C27842CAF008EA48C /* TagViewModel.swift in Sources */,
 				BE0B31F42775635E002C7C77 /* TagViewController.swift in Sources */,
 				BE9592782754D87400A2B211 /* QiitaUser.swift in Sources */,
 				BEDC2DB6276AD09700EEC5EA /* ViewReactor.swift in Sources */,
