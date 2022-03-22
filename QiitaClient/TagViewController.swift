@@ -167,7 +167,6 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
             return UITableViewCell()
         }
         
-        // ⑧indexPathを用いてarticlesから該当のarticleを取得する
         let article = articles[indexPath.row]
 //        print(type(of: article.created_at))
 
@@ -188,7 +187,7 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
         let postedColon = "投稿日: " + dateStr
         let titleColon = "タイトル: " + article.title
 
-//         ⑨cellへの反映
+//         cellへの反映
         cell.set(title: titleColon, author: authorColon, posted: postedColon)
 //        print("サーチ処理押下後動作確認")
         return cell
@@ -244,10 +243,9 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
         self.page = 1
         getQiitaArticles()
 //        更新したい処理をここに記入（データの受け取りなど）
-       //上記の処理が終了したら下記が実行されます。
        DispatchQueue.main.async {
-          self.tableView.reloadData()  //TableViewの中身を更新する場合はここでリロード処理
-          self.tableView.refreshControl?.endRefreshing()  //これを必ず記載すること
+          self.tableView.reloadData()
+          self.tableView.refreshControl?.endRefreshing()
        }
     }
     
