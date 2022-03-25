@@ -23,19 +23,19 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
     var disposeBag = DisposeBag()
     
     var token = "daac5dc84737855447811d2982becb4afb2d688d"
-
+    
     let Auth_header: HTTPHeaders = [
         "Authorization" : "Bearer daac5dc84737855447811d2982becb4afb2d688d"
     ]
-
+    
     let decoder: JSONDecoder = JSONDecoder()
     let encoder: JSONEncoder = JSONEncoder()
     let format = DateFormatter()
     let formatstr = DateFormatter()
     let iso8601DateFormatter = ISO8601DateFormatter()
-        //表示するデータの配列
+    //表示するデータの配列
     var datas:[Data] = []
-      //表示ステータス
+    //表示ステータス
     var displayStatus:String = "standby"
     //現在取得しているセル数
     private var page: Int = 1
@@ -58,10 +58,10 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
         case fetching
         case full
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         tableView.dataSource = self
         tableView.delegate = self // この行を追加
         formatstr.dateFormat = "yyyy-MM-dd"
@@ -80,34 +80,34 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
             emptyLabel.isHidden = false
         }
         
-        //現状非同期にしたは良いが、押下と同時にスクロールすると自動読み込みとタイミングがぶつかり配列エラーになる。同期をズラす必要性がある。
+        //        現状非同期にしたは良いが、押下と同時にスクロールすると自動読み込みとタイミングがぶつかり配列エラーになる。同期をズラす必要性がある。
         buttonIos.rx.tap.subscribe(onNext:{[weak self] in
             self!.tag = "iOS"
             self!.articles = []
             self!.getQiitaArticles()
         }).disposed(by: disposeBag)
-//        buttonIos.addAction(.init { _ in
-//            self.tag = "iOS"
-//            self.articles = []
-//            self.getQiitaArticles() }, for: .touchUpInside)
+        //        buttonIos.addAction(.init { _ in
+        //            self.tag = "iOS"
+        //            self.articles = []
+        //            self.getQiitaArticles() }, for: .touchUpInside)
         buttonKotlin.rx.tap.subscribe(onNext:{[weak self] in
             self!.tag = "Kotlin"
             self!.articles = []
             self!.getQiitaArticles()
         }).disposed(by: disposeBag)
-//        buttonKotlin.addAction(.init { _ in
-//            self.tag = "Kotlin"
-//            self.articles = []
-//            self.getQiitaArticles() }, for: .touchUpInside)
+        //        buttonKotlin.addAction(.init { _ in
+        //            self.tag = "Kotlin"
+        //            self.articles = []
+        //            self.getQiitaArticles() }, for: .touchUpInside)
         buttonJava.rx.tap.subscribe(onNext:{[weak self] in
             self!.tag = "Java"
             self!.articles = []
             self!.getQiitaArticles()
         }).disposed(by: disposeBag)
-//        buttonJava.addAction(.init { _ in
-//            self.tag = "Java"
-//            self.articles = []
-//            self.getQiitaArticles() }, for: .touchUpInside)
+        //        buttonJava.addAction(.init { _ in
+        //            self.tag = "Java"
+        //            self.articles = []
+        //            self.getQiitaArticles() }, for: .touchUpInside)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -122,12 +122,12 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
         print("distanceToBottom: ",distanceToBottom)
         print("articles.count: ",articles.count)
         if distanceToBottom < 50 {
-
+            
             getQiitaArticles()
-//            print("articles.count: ",articles.count)
+            //            print("articles.count: ",articles.count)
         }
     }
-
+    
     // loadする関数の定義
     private func getQiitaArticles() {
         guard loadStatus != "fetching" && loadStatus != "full" else { return }
@@ -141,9 +141,9 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
                     print("page: " + String(self.page))
                     self.loadStatus = "loadmore"
                     //今のままだと全部上書きされているのでaddにしないといけない。 articlesを消えないように保持する。初期化するときはリフレッシュの時だけにする。
-
+                    
                     viewArticles = try self.decoder.decode([QiitaArticle].self, from: response.data!)
-
+                    
                     if self.page == 100 {
                         self.loadStatus = "full"
                     }
@@ -171,7 +171,7 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         articles.count
-//        return 10
+        //        return 10
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -180,36 +180,36 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
         }
         
         let article = articles[indexPath.row]
-//        print(type(of: article.created_at))
-
+        //        print(type(of: article.created_at))
+        
         // ロケール設定（端末の暦設定に引きづられないようにする）
         format.locale = Locale(identifier: "en_US_POSIX")
-
+        
         // タイムゾーン設定（端末設定によらず、どこの地域の時間帯なのかを指定する）
         format.timeZone = TimeZone(identifier: "Asia/Tokyo")
-
-
+        
+        
         // 変換
         let date = format.date(from: article.created_at)
-
-
+        
+        
         let dateStr = formatstr.string(from: date!)
-//        print(dateStr) // -> 2020-10-20 02:22:33 +0000
+        //        print(dateStr) // -> 2020-10-20 02:22:33 +0000
         let authorColon = "著者: " + article.user.id
         let postedColon = "投稿日: " + dateStr
         let titleColon = "タイトル: " + article.title
-
-//         cellへの反映
+        
+        //         cellへの反映
         cell.set(title: titleColon, author: authorColon, posted: postedColon)
-//        print("サーチ処理押下後動作確認")
+        //        print("サーチ処理押下後動作確認")
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
-            let webViewController = storyboard.instantiateInitialViewController() as! WebViewController
-            let article = articles[indexPath.row]
-            webViewController.url = article.url
-            navigationController?.pushViewController(webViewController, animated: true)
+        let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
+        let webViewController = storyboard.instantiateInitialViewController() as! WebViewController
+        let article = articles[indexPath.row]
+        webViewController.url = article.url
+        navigationController?.pushViewController(webViewController, animated: true)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -239,40 +239,40 @@ class TagViewController: UIViewController, UITableViewDataSource, UITableViewDel
             }
         }
         self.tableView.reloadData()
-
-        }
+        
+    }
     func configureRefreshControl () {
-       //RefreshControlを追加する処理
-       tableView.refreshControl = UIRefreshControl()
-       tableView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        //RefreshControlを追加する処理
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
     
-
-
+    
+    
     @objc func handleRefreshControl() {
         print("================リフレッシュ処理================")
         articles = []
         self.page = 1
         getQiitaArticles()
-//        更新したい処理をここに記入（データの受け取りなど）
-       DispatchQueue.main.async {
-          self.tableView.reloadData()
-          self.tableView.refreshControl?.endRefreshing()
-       }
+        //        更新したい処理をここに記入（データの受け取りなど）
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            self.tableView.refreshControl?.endRefreshing()
+        }
     }
     
-
-    }
+    
+}
 //============================================================
 
 
 class TagLabel: UILabel {
-
+    
     let tagPadding: CGFloat = 5
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        
         layer.cornerRadius = 2
         layer.borderColor = UIColor.black.cgColor
         layer.borderWidth = 1
@@ -280,11 +280,11 @@ class TagLabel: UILabel {
         clipsToBounds = true
         numberOfLines = 1
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func draw(_ rect: CGRect) {
         let insets = UIEdgeInsets(top: tagPadding, left: tagPadding, bottom: tagPadding, right: tagPadding)
         return super.drawText(in: rect.inset(by: insets))

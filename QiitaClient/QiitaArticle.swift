@@ -12,7 +12,5 @@ struct QiitaArticle: Codable {
     let title: String
     let url: String
     let created_at:String
-//    let date:String
-    let user: QiitaUser // ⓵
-//    let user: String
+    let user: QiitaUser
 }

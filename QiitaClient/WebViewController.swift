@@ -9,30 +9,26 @@ import WebKit
 
 class WebViewController: UIViewController, WKNavigationDelegate {
     var webView = WKWebView()
-
-    // ①表示するURLを持っておく
     var url: String!
-
-    
     var topPadding:CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let screenWidth:CGFloat = view.frame.size.width
         let screenHeight:CGFloat = view.frame.size.height
-//        webView.frame = view.frame
+        //        webView.frame = view.frame
         if #available(iOS 11.0, *) {
             // 'keyWindow' was deprecated in iOS 13.0: Should not be used for applications
             let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
             topPadding = window!.safeAreaInsets.top
         }
-//        let safeAreaInsets = UIApplication.shared.windows.first { $0.isKeyWindow }!.safeAreaInsets.left
-//        if(safeAreaInsets >= 80.0){
-//            webView.frame = CGRect(x: 0,
-//                                   y: 100,
-//                                   width: view.frame.size.width,
-//                                   height: view.frame.size.height)
-//        }
+        //        let safeAreaInsets = UIApplication.shared.windows.first { $0.isKeyWindow }!.safeAreaInsets.left
+        //        if(safeAreaInsets >= 80.0){
+        //            webView.frame = CGRect(x: 0,
+        //                                   y: 100,
+        //                                   width: view.frame.size.width,
+        //                                   height: view.frame.size.height)
+        //        }
         let rect = CGRect(x: 0,
                           y: topPadding + 40,
                           width: screenWidth,
@@ -40,19 +36,18 @@ class WebViewController: UIViewController, WKNavigationDelegate {
         let webConfiguration = WKWebViewConfiguration()
         webView = WKWebView(frame: rect, configuration: webConfiguration)
         view.addSubview(webView)
-//        view.transform = CGAffineTransform(translationX: 0, y: 150)
-        // ②googleのページからプロパティのurlに変更
+        //        view.transform = CGAffineTransform(translationX: 0, y: 150)
         let url = URL(string: self.url)
         print("受け渡し: ", url)
         let request = URLRequest(url: url!)
         webView.load(request)
-        
     }
     public func openURL(_ string: String?) {
-        guard string != nil else { return }  //実際にはreturnするだけでなく何かしらのエラーメッセージが出るようにする
-    let url = URL(string: url)!
-    let request = URLRequest(url: url)
-    webView.load(request)
+        //        実際にはreturnするだけでなく何かしらのエラーメッセージが出るようにする
+        guard string != nil else { return }
+        let url = URL(string: url)!
+        let request = URLRequest(url: url)
+        webView.load(request)
     }
 }
 

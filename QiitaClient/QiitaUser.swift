@@ -8,13 +8,13 @@
 import Foundation
 
 struct QiitaUser: Codable {
-//    let created_at: String
-//    "created_at": "2000-01-01T00:00:00+00:00",
+    //    let created_at: String
+    //    "created_at": "2000-01-01T00:00:00+00:00",
     let id: String
-    let imageUrl: String // ①
-
+    let imageUrl: String
+    
     enum CodingKeys: String, CodingKey {
         case id
-        case imageUrl = "profile_image_url" // ②
+        case imageUrl = "profile_image_url"
     }
 }
