@@ -21,6 +21,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var emptyLabel: UILabel!
     
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.searchBar.resignFirstResponder()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
     var disposeBag = DisposeBag()
     
     //    現状自分自身のトークンをそのまま入れてる。こちらをユーザーに入力させるフィールドを作成したい。
@@ -113,6 +121,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             getQiitaArticles()
             //            print("articles.count: ",articles.count)
         }
+        self.view.endEditing(true)
     }
     
     //     loadする関数の定義
@@ -223,6 +232,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 //                emptyLabel.isHidden = false
             }
         }
+        searchBar.resignFirstResponder()
         self.tableView.reloadData()
         
     }
@@ -242,6 +252,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             //           TableViewの中身を更新する場合はここでリロード処理
             self.tableView.reloadData()
             self.tableView.refreshControl?.endRefreshing()
+            self.view.endEditing(true)
         }
     }
 }
