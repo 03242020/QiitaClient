@@ -8,9 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BE0B31F42775635E002C7C77 /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0B31F32775635E002C7C77 /* TagViewController.swift */; };
-		BE13DD6C2902749D0087997B /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE13DD6B2902749D0087997B /* Model.swift */; };
-		BE13DD6F2902821D0087997B /* QiitaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE13DD6D2902821D0087997B /* QiitaCollectionViewCell.swift */; };
-		BE13DD702902821D0087997B /* QiitaCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE13DD6E2902821D0087997B /* QiitaCollectionViewCell.xib */; };
+		BE22DBB92911FBEF00ADAA27 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE22DBB72911FBEF00ADAA27 /* TableViewCell.swift */; };
+		BE22DBBA2911FBEF00ADAA27 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE22DBB82911FBEF00ADAA27 /* TableViewCell.xib */; };
 		BE3F2F0C27E99E33003D451D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = BE3F2F0B27E99E33003D451D /* Alamofire */; };
 		BE959253274F816C00A2B211 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE959252274F816C00A2B211 /* AppDelegate.swift */; };
 		BE959255274F816C00A2B211 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE959254274F816C00A2B211 /* SceneDelegate.swift */; };
@@ -31,9 +30,8 @@
 
 /* Begin PBXFileReference section */
 		BE0B31F32775635E002C7C77 /* TagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
-		BE13DD6B2902749D0087997B /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		BE13DD6D2902821D0087997B /* QiitaCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiitaCollectionViewCell.swift; sourceTree = "<group>"; };
-		BE13DD6E2902821D0087997B /* QiitaCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QiitaCollectionViewCell.xib; sourceTree = "<group>"; };
+		BE22DBB72911FBEF00ADAA27 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		BE22DBB82911FBEF00ADAA27 /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
 		BE95924F274F816C00A2B211 /* QiitaClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QiitaClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE959252274F816C00A2B211 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BE959254274F816C00A2B211 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,15 +89,14 @@
 				BE95927B2755C1A300A2B211 /* QiitaArticle.swift */,
 				BE959254274F816C00A2B211 /* SceneDelegate.swift */,
 				BE959256274F816C00A2B211 /* ViewController.swift */,
-				BE13DD6B2902749D0087997B /* Model.swift */,
+				BE22DBB72911FBEF00ADAA27 /* TableViewCell.swift */,
+				BE22DBB82911FBEF00ADAA27 /* TableViewCell.xib */,
 				BEB956C729014A41002484B2 /* CustomCell.swift */,
 				BEB956C829014A41002484B2 /* CustomCell.xib */,
 				BE0B31F32775635E002C7C77 /* TagViewController.swift */,
 				BE95926A27546C2800A2B211 /* WebViewController.swift */,
 				BE95926C27546CEA00A2B211 /* WebViewController.storyboard */,
 				BE959258274F816C00A2B211 /* Main.storyboard */,
-				BE13DD6D2902821D0087997B /* QiitaCollectionViewCell.swift */,
-				BE13DD6E2902821D0087997B /* QiitaCollectionViewCell.xib */,
 				BE95925B274F817800A2B211 /* Assets.xcassets */,
 				BE95925D274F817800A2B211 /* LaunchScreen.storyboard */,
 				BE959260274F817800A2B211 /* Info.plist */,
@@ -184,7 +181,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEB956CA29014A41002484B2 /* CustomCell.xib in Resources */,
-				BE13DD702902821D0087997B /* QiitaCollectionViewCell.xib in Resources */,
+				BE22DBBA2911FBEF00ADAA27 /* TableViewCell.xib in Resources */,
 				BE95925F274F817800A2B211 /* LaunchScreen.storyboard in Resources */,
 				BE95925C274F817800A2B211 /* Assets.xcassets in Resources */,
 				BE95925A274F816C00A2B211 /* Main.storyboard in Resources */,
@@ -205,10 +202,9 @@
 				BE959253274F816C00A2B211 /* AppDelegate.swift in Sources */,
 				BE95926B27546C2800A2B211 /* WebViewController.swift in Sources */,
 				BE959255274F816C00A2B211 /* SceneDelegate.swift in Sources */,
-				BE13DD6C2902749D0087997B /* Model.swift in Sources */,
+				BE22DBB92911FBEF00ADAA27 /* TableViewCell.swift in Sources */,
 				BE0B31F42775635E002C7C77 /* TagViewController.swift in Sources */,
 				BE9592782754D87400A2B211 /* QiitaUser.swift in Sources */,
-				BE13DD6F2902821D0087997B /* QiitaCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

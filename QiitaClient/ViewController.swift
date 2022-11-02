@@ -15,58 +15,66 @@ import os
 
 let logger = Logger(subsystem: "com.inomata.QiitaClient", category: "Network")
 
-class ViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
-    
+class ViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate, UITableViewDataSource, UITableViewDelegate {
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.dataSource = self
-        collectionView.delegate = self
+        tableView.dataSource = self
+        tableView.delegate = self
         formatstr.dateFormat = "yyyy-MM-dd"
         format.dateFormat = "yyyy-MM-dd'T'HH:mm:ssXXX"
-        collectionView.register(UINib(nibName: "QiitaCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "QiitaCollectionViewCell")
-        collectionView.register(UINib(nibName: "CustomCell", bundle: nil), forCellWithReuseIdentifier: "CustomCell")
+        let nib = UINib(nibName: "TableViewCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: "TableViewCell")
+        tableView.rowHeight = 80
         configureRefreshControl()
         getQiitaArticles()
-        let configuration = UICollectionLayoutListConfiguration(appearance: .plain)
-        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
-        collectionView.collectionViewLayout = layout
     }
-    
-    typealias DataSourceType = UICollectionViewDiffableDataSource<Int, String>
-    
-    private var dataSource: DataSourceType!
-    
-    @IBOutlet weak var collectionView: UICollectionView!
+
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("articles.count: ", articles.count)
-        return articles.count
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        articles.count
+        //        return 10
     }
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomCell", for: indexPath) as! CustomCell
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as? TableViewCell else {
+            return UITableViewCell()
+        }
         let article = articles[indexPath.row]
-            format.locale = Locale(identifier: "en_US_POSIX")
-            format.timeZone = TimeZone(identifier: "Asia/Tokyo")
-            let date = format.date(from: article.created_at)
-            let dateStr = formatstr.string(from: date!)
-            let authorColon = "著者: " + article.user.id
-            let postedColon = "投稿日: " + dateStr
-            let titleColon = "タイトル: " + article.title
+        //        print(type(of: article.created_at))
+
+
+        // ロケール設定（端末の暦設定に引きづられないようにする）
+        format.locale = Locale(identifier: "en_US_POSIX")
+
+        // タイムゾーン設定（端末設定によらず、どこの地域の時間帯なのかを指定する）
+        format.timeZone = TimeZone(identifier: "Asia/Tokyo")
+
+
+        // 変換
+        let date = format.date(from: article.created_at)
+
+
+        let dateStr = formatstr.string(from: date!)
+        //        print(dateStr) // -> 2020-10-20 02:22:33 +0000
+        let authorColon = "著者: " + article.user.id
+        let postedColon = "投稿日: " + dateStr
+        let titleColon = "タイトル: " + article.title
+
         cell.setupCell(title: titleColon, author: authorColon, posted: postedColon)
-        cell.layer.borderColor = UIColor.lightGray.cgColor // 外枠の色
-        cell.layer.borderWidth = 1.0 // 枠線の太さ
+        //        print("サーチ処理押下後動作確認")
         return cell
     }
-    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         self.searchBar.resignFirstResponder()
     }
-    
+
     var token = "daac5dc84737855447811d2982becb4afb2d688d"
 
     //QiitaAPI制限を1時間1000回に増やす。ベアラー認証。
@@ -104,13 +112,13 @@ class ViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate, U
         case fetching
         case full
     }
-    
 
-    
+
+
     override func viewDidAppear(_ animated: Bool) {
          super.viewDidAppear(animated)
      }
-    
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let currentOffsetY = scrollView.contentOffset.y
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.height
@@ -126,7 +134,7 @@ class ViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate, U
         }
         self.view.endEditing(true)
     }
-    
+
     //     loadする関数の定義
     private func getQiitaArticles() {
         guard loadStatus != "fetching" && loadStatus != "full" else { return }
@@ -146,7 +154,7 @@ class ViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate, U
                     self.articles += viewArticles
                     print("getQiitaArticles内且つdo内、サーチ処理中のpage ",self.page,"+ per_page " , self.per_page)
                     self.page += 1 //pageを+1する処理
-                    self.collectionView.reloadData()
+                    self.tableView.reloadData()
                 } catch {
                     self.loadStatus = "error"
                     print("デコードに失敗しました")
@@ -157,7 +165,7 @@ class ViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate, U
         }
     }
 
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         DispatchQueue.main.async {
             let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
             let webViewController = storyboard.instantiateInitialViewController() as! WebViewController
@@ -166,7 +174,7 @@ class ViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate, U
             self.navigationController?.pushViewController(webViewController, animated: true)
         }
     }
-    
+
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchBar.text {
             if text == "" {
@@ -194,22 +202,22 @@ class ViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate, U
             }
         }
         searchBar.resignFirstResponder()
-        self.collectionView.reloadData()
+        self.tableView.reloadData()
 
     }
     func configureRefreshControl () {
         //RefreshControlを追加する処理
-        collectionView.refreshControl = UIRefreshControl()
-        collectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
-    
+
     @objc func handleRefreshControl() {
         articles = []
         self.page = 1
         getQiitaArticles()
         DispatchQueue.main.async {
-            self.collectionView.reloadData()
-            self.collectionView.refreshControl?.endRefreshing()
+            self.tableView.reloadData()
+            self.tableView.refreshControl?.endRefreshing()
             self.view.endEditing(true)
         }
     }
