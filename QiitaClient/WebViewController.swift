@@ -22,20 +22,18 @@ class WebViewController: UIViewController, WKNavigationDelegate {
                 let scenes = UIApplication.shared.connectedScenes
                 let windowScene = scenes.first as? UIWindowScene
                 let window = windowScene?.windows.first
-                //iOS 15.0から黄色のエラーメッセージが出るので修正
-                //            let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
                 self.topPadding = window!.safeAreaInsets.top
             }
         }
         DispatchQueue.main.async {
             let rect = CGRect(x: 0,
-                              y: self.topPadding + 40,
+                              y: self.topPadding,
+//                              y: self.topPadding + 40,
                               width: screenWidth,
                               height: screenHeight - self.topPadding)
             let webConfiguration = WKWebViewConfiguration()
             self.webView = WKWebView(frame: rect, configuration: webConfiguration)
             self.view.addSubview(self.webView)
-            //        view.transform = CGAffineTransform(translationX: 0, y: 150)
             let url = URL(string: self.url)
             print("受け渡し: ", url!)
             let request = URLRequest(url: url!)
