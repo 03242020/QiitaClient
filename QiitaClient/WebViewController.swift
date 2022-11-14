@@ -27,8 +27,8 @@ class WebViewController: UIViewController, WKNavigationDelegate {
         }
         DispatchQueue.main.async {
             let rect = CGRect(x: 0,
-                              y: self.topPadding,
-//                              y: self.topPadding + 40,
+//                              y: self.topPadding,
+                              y: self.topPadding + 40,
                               width: screenWidth,
                               height: screenHeight - self.topPadding)
             let webConfiguration = WKWebViewConfiguration()

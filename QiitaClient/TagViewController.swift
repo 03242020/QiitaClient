@@ -77,7 +77,7 @@ class TagViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate
             let titleColon = "タイトル: " + article.title
         cell.setupCell(title: titleColon, author: authorColon, posted: postedColon)
         cell.layer.borderColor = UIColor.lightGray.cgColor // 外枠の色
-        cell.layer.borderWidth = 1.0 // 枠線の太さ
+        cell.layer.borderWidth = 0.3 // 枠線の太さ
         return cell
     }
     
