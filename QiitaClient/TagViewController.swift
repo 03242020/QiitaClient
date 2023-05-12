@@ -12,15 +12,28 @@ import RxSwift
 import RxCocoa
 import WebKit
 
-class TagViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
-    
+//extensionで分ける
+extension TagViewController: UISearchBarDelegate {
+    func configureRefreshControl () {
+        //RefreshControlを追加する処理
+        collectionView.refreshControl = UIRefreshControl()
+        collectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+    }
+}
+
+class TagViewController: UIViewController, UITabBarDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+    //パラメータの定義をここに書く
+    //次にライフサイクル
+    //メソッドを次に書く
+    //collectionViewのセルの大きさを合わせる
+    //navigationコントローラーについて学習,検索する
+    //we
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.dataSource = self
         collectionView.delegate = self
         formatstr.dateFormat = "yyyy-MM-dd"
         format.dateFormat = "yyyy-MM-dd'T'HH:mm:ssXXX"
-        collectionView.register(UINib(nibName: "QiitaCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "QiitaCollectionViewCell")
         collectionView.register(UINib(nibName: "CustomCell", bundle: nil), forCellWithReuseIdentifier: "CustomCell")
         configureRefreshControl()
         getQiitaArticles()
@@ -45,6 +58,7 @@ class TagViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate
             self!.collectionView.reloadData()
             self!.getQiitaArticles()
         }).disposed(by: disposeBag)
+        self.navigationItem.title = "タグ検索ページ"
     }
     
     typealias DataSourceType = UICollectionViewDiffableDataSource<Int, String>
@@ -53,6 +67,7 @@ class TagViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate
     let disposeBag = DisposeBag()
     
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
     @IBOutlet weak var buttonIos: UIButton!
     @IBOutlet weak var buttonKotlin: UIButton!
     @IBOutlet weak var buttonJava: UIButton!
@@ -70,12 +85,12 @@ class TagViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate
         let article = articles[indexPath.row]
             format.locale = Locale(identifier: "en_US_POSIX")
             format.timeZone = TimeZone(identifier: "Asia/Tokyo")
-            let date = format.date(from: article.created_at)
-            let dateStr = formatstr.string(from: date!)
-            let authorColon = "著者: " + article.user.id
-            let postedColon = "投稿日: " + dateStr
-            let titleColon = "タイトル: " + article.title
-        cell.setupCell(title: titleColon, author: authorColon, posted: postedColon)
+//            let date = format.date(from: article.created_at)
+//            let dateStr = formatstr.string(from: date!)
+//            let authorColon = "著者: " + article.user.id
+//            let postedColon = "投稿日: " + dateStr
+//            let titleColon = "タイトル: " + article.title
+//        cell.setupCell(title: titleColon, author: authorColon, posted: postedColon)
         cell.layer.borderColor = UIColor.lightGray.cgColor // 外枠の色
         cell.layer.borderWidth = 0.3 // 枠線の太さ
         return cell
@@ -120,7 +135,7 @@ class TagViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate
     }
     
 
-    
+    //ライフサイクル系はまとめておく
     override func viewDidAppear(_ animated: Bool) {
          super.viewDidAppear(animated)
      }
@@ -176,7 +191,7 @@ class TagViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate
             let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
             let webViewController = storyboard.instantiateInitialViewController() as! WebViewController
             let article = self.articles[indexPath.row]
-            webViewController.url = article.url
+//            webViewController.url = article.url
             self.navigationController?.pushViewController(webViewController, animated: true)
         }
     }
@@ -211,11 +226,7 @@ class TagViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate
         self.collectionView.reloadData()
 
     }
-    func configureRefreshControl () {
-        //RefreshControlを追加する処理
-        collectionView.refreshControl = UIRefreshControl()
-        collectionView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
-    }
+
     
     @objc func handleRefreshControl() {
         articles = []

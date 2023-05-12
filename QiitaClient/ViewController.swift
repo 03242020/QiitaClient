@@ -17,6 +17,10 @@ let logger = Logger(subsystem: "com.inomata.QiitaClient", category: "Network")
 
 class ViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate, UITableViewDataSource, UITableViewDelegate {
 
+    enum Section {
+        case main
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
@@ -27,7 +31,10 @@ class ViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate, U
         tableView.register(nib, forCellReuseIdentifier: "TableViewCell")
         tableView.rowHeight = 80
         configureRefreshControl()
+        configureDataSource()
+        applySnapshot()
         getQiitaArticles()
+        self.navigationItem.title = "フリーワード検索ページ"
     }
 
     @IBOutlet weak var tableView: UITableView!
@@ -58,16 +65,16 @@ class ViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate, U
 
 
         // 変換
-        let date = format.date(from: article.created_at)
+//        let date = format.date(from: article.created_at)
 
 
-        let dateStr = formatstr.string(from: date!)
+//        let dateStr = formatstr.string(from: date!)
         //        print(dateStr) // -> 2020-10-20 02:22:33 +0000
-        let authorColon = "著者: " + article.user.id
-        let postedColon = "投稿日: " + dateStr
-        let titleColon = "タイトル: " + article.title
+//        let authorColon = "著者: " + article.user.id
+//        let postedColon = "投稿日: " + dateStr
+//        let titleColon = "タイトル: " + article.title
 
-        cell.setupCell(title: titleColon, author: authorColon, posted: postedColon)
+//        cell.setupCell(title: titleColon, author: authorColon, posted: postedColon)
         //        print("サーチ処理押下後動作確認")
         return cell
     }
@@ -112,7 +119,8 @@ class ViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate, U
         case fetching
         case full
     }
-
+    private var dataSource: UICollectionViewDiffableDataSource<Section, QiitaArticleDiffable.ID>!
+    private var repository: TodoRepository = .init()
 
 
     override func viewDidAppear(_ animated: Bool) {
@@ -133,6 +141,18 @@ class ViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate, U
             print(articles.count)
         }
         self.view.endEditing(true)
+    }
+    
+    private func configureDataSource() {
+        let todoCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, QiitaArticleDiffable> { cell, indexPath, todo in
+            var configuration = cell.defaultContentConfiguration()
+            configuration.text = todo.title
+            cell.contentConfiguration = configuration
+            
+//            cell.accessories = [
+//                .checkmark(displayed: .always, options: .init(isHidden: !todo.done))
+//            ]
+        }
     }
 
     //     loadする関数の定義
@@ -170,7 +190,7 @@ class ViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate, U
             let storyboard = UIStoryboard(name: "WebViewController", bundle: nil)
             let webViewController = storyboard.instantiateInitialViewController() as! WebViewController
             let article = self.articles[indexPath.row]
-            webViewController.url = article.url
+//            webViewController.url = article.url
             self.navigationController?.pushViewController(webViewController, animated: true)
         }
     }
@@ -220,5 +240,21 @@ class ViewController: UIViewController, UISearchBarDelegate, UITabBarDelegate, U
             self.tableView.refreshControl?.endRefreshing()
             self.view.endEditing(true)
         }
+    }
+    private func applySnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, QiitaArticleDiffable.ID>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(repository.todoIDs, toSection: .main)
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
+}
+final class TodoRepository {
+    var todoIDs: [QiitaArticle.ID] { todos.map(\.id) }
+    private var todos: [QiitaArticle] = (1...30).map { i in
+        QiitaArticle(id: UUID(), title: "try #\(i)", done: false)
+    }
+
+    func todo(id: QiitaArticle.ID) -> QiitaArticle? {
+        todos.first(where: { $0.id == id })
     }
 }

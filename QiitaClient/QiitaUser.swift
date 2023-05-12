@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct QiitaUser: Codable {
+struct QiitaUser: Codable,Identifiable {
     
     let id: String
     let imageUrl: String
